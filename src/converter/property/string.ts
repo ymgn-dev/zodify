@@ -1,4 +1,4 @@
-import { camelize } from '../../utils'
+import { pascalToCamel } from '../../utils'
 import { PropConverterBase } from './base'
 import type { StringFormat } from '../schemas'
 
@@ -15,7 +15,7 @@ export class StringPropConverter extends PropConverterBase {
     return defaultValue !== undefined ? `.default('${defaultValue}')` : ''
   }
 
-  override formatToZodString(format?: StringFormat) {
+  formatToZodString(format?: StringFormat) {
     switch (format) {
       case 'date':
         return '.date()'
@@ -36,7 +36,7 @@ export class StringPropConverter extends PropConverterBase {
   }
 
   override toZodString() {
-    return `${camelize(this.key)}: z.string()${this.formatToZodString(this.prop.format as StringFormat)}\
+    return `${pascalToCamel(this.key)}: z.string()${this.formatToZodString(this.prop.format as StringFormat)}\
     ${this.minLengthToZodString(this.prop.minLength)}\
     ${this.maxLengthToZodString(this.prop.maxLength)}\
     ${this.defaultToZodString(this.prop.default as string | undefined)}`

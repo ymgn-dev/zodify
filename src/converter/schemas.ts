@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 // https://swagger.io/docs/specification/data-models/data-types/
 
-const dataTypeLiteralSchema = z.union([
+const dataTypeSchema = z.union([
   z.literal('string'),
   z.literal('number'),
   z.literal('integer'),
@@ -32,27 +32,35 @@ const numberFormatSchema = z.union([
 ])
 
 const propertySchema = z.object({
-  type: dataTypeLiteralSchema,
+  type: dataTypeSchema,
   format: z.union([stringFormatSchema, numberFormatSchema]).optional(),
   minLength: z.number().optional(),
   maxLength: z.number().optional(),
   minimum: z.number().optional(),
   maximum: z.number().optional(),
+  items: z.object({ $ref: z.string() }).optional(),
+  minItems: z.number().optional(),
+  maxItems: z.number().optional(),
   default: z.union([z.string(), z.number(), z.boolean()]).optional(),
 })
 
 export const componentSchema = z.object({
-  type: dataTypeLiteralSchema,
+  type: dataTypeSchema,
   required: z.array(z.string()).optional(),
+  minItems: z.number().optional(),
   maxItems: z.number().optional(),
   items: z.object({ $ref: z.string() }).optional(),
   properties: z.record(propertySchema).optional(),
   enum: z.array(z.union([z.string(), z.number()])).optional(),
 })
 
-export type DataTypeLiteral = z.infer<typeof dataTypeLiteralSchema>
+export type DataType = z.infer<typeof dataTypeSchema>
 export type Format = z.infer<typeof stringFormatSchema | typeof numberFormatSchema>
 export type StringFormat = z.infer<typeof stringFormatSchema>
 export type NumberFormat = z.infer<typeof numberFormatSchema>
 export type Property = z.infer<typeof propertySchema>
 export type Component = z.infer<typeof componentSchema>
+
+export type RefCount = {
+  [K in keyof Record<string, Component>]: number
+}

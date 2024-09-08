@@ -6,6 +6,5 @@ export abstract class PropConverterBase {
     protected readonly prop: Property,
   ) { }
 
-  protected abstract formatToZodString(format: unknown): string
   public abstract toZodString(): string
 }

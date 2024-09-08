@@ -1,7 +1,5 @@
-// CamelCase -> camelCase
-export function camelize(text: string) {
-  const a = text.toLowerCase()
-    .replace(/[-_\s.]+(.)?/g, (_, c) => c ? c.toUpperCase() : '')
-
-  return a.substring(0, 1).toLowerCase() + a.substring(1)
+export function pascalToCamel(pascal: string): string {
+  if (pascal.length === 0)
+    return pascal
+  return pascal.charAt(0).toLowerCase() + pascal.slice(1)
 }

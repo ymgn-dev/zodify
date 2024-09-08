@@ -1,4 +1,4 @@
-import { camelize } from '../../utils'
+import { pascalToCamel } from '../../utils'
 import { PropConverterBase } from './base'
 import type { Format, NumberFormat } from '../schemas'
 
@@ -15,7 +15,7 @@ export class NumberPropConverter extends PropConverterBase {
     return defaultValue !== undefined ? `.default(${defaultValue})` : ''
   }
 
-  override formatToZodString(format?: NumberFormat) {
+  formatToZodString(format?: NumberFormat) {
     switch (format) {
       case 'float':
       case 'double':
@@ -29,7 +29,7 @@ export class NumberPropConverter extends PropConverterBase {
   }
 
   override toZodString() {
-    return `${camelize(this.key)}: z.string()${this.formatToZodString(this.prop.format as NumberFormat)}\
+    return `${pascalToCamel(this.key)}: z.string()${this.formatToZodString(this.prop.format as NumberFormat)}\
     ${this.minToZodString(this.prop.minimum)}\
     ${this.maxToZodString(this.prop.maximum)}\
     ${this.defaultToZodString(this.prop.default as number | undefined)}`

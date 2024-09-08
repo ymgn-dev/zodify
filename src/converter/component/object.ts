@@ -1,12 +1,13 @@
 import { assert } from 'node:console'
-import { camelize } from '../../utils'
+import { ArrayPropConverter } from '../property/array'
+import { BooleanPropConverter } from '../property/boolean'
 import { NumberPropConverter } from '../property/number'
 import { StringPropConverter } from '../property/string'
 import { CmpConverterBase } from './base'
 import type { PropConverterBase } from '../property/base'
 
 export class ObjectCmpConverter extends CmpConverterBase {
-  toZodString() {
+  override toZodString() {
     const props = Object.entries(this.cmp.properties ?? {}).map(([key, prop]) => {
       let propConverter: PropConverterBase | undefined
       switch (prop.type) {
@@ -17,11 +18,14 @@ export class ObjectCmpConverter extends CmpConverterBase {
         case 'integer':
           propConverter = new NumberPropConverter(key, prop)
           break
+        case 'boolean':
+          propConverter = new BooleanPropConverter(key, prop)
+          break
+        case 'array':
+          propConverter = new ArrayPropConverter(key, prop, this.cmp)
+          break
         // TODO: Add support for other types
-        // boolean
         // object
-        // integer
-        // array
         default:
           assert(false, `Unsupported type: ${prop.type}`)
       }
