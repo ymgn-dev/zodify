@@ -13,7 +13,7 @@ This package generates Zod schema based on an OpenAPI yaml file.
 
 ## Usage
 
-# a: It is still under development, but it will be available as shown below.
+It is still under development, but it will be available as shown below.
 
 ```bash
 npx zodify -i docs/openapi.yaml -o ./gen/schemas.ts
