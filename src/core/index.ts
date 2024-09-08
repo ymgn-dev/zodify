@@ -43,19 +43,19 @@ function formatToZodFormat(format?: Format) {
 }
 
 function minLengthToZodString(minLength?: number) {
-  return minLength ? `.min(${minLength})` : ''
+  return minLength !== undefined ? `.min(${minLength})` : ''
 }
 
 function maxLengthToZodString(maxLength?: number) {
-  return maxLength ? `.max(${maxLength})` : ''
+  return maxLength !== undefined ? `.max(${maxLength})` : ''
 }
 
 function minimumToZodString(minimum?: number) {
-  return minimum ? `.min(${minimum})` : ''
+  return minimum !== undefined ? `.min(${minimum})` : ''
 }
 
 function maximumToZodString(maximum?: number) {
-  return maximum ? `.max(${maximum})` : ''
+  return maximum !== undefined ? `.max(${maximum})` : ''
 }
 
 export function componentToZodString(component: Component) {
