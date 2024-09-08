@@ -1,4 +1,5 @@
 import { assert } from 'node:console'
+import type { ZodAny } from 'zod'
 import { pascalToCamel } from '../../utils'
 import { refCount } from '../ref-count'
 import { PropConverterBase } from './base'
@@ -21,7 +22,16 @@ export class ArrayPropConverter extends PropConverterBase {
     return maxItems !== undefined ? `.max(${maxItems})` : ''
   }
 
-  defaultToZodString(defaultValue?: string) {
+  defaultToZodString(defaultValue?: unknown) {
+    if (typeof defaultValue === 'string') {
+      return `.default('${defaultValue}')`
+    }
+    if (typeof defaultValue === 'number') {
+      return `.default(${defaultValue})`
+    }
+    if (typeof defaultValue === 'object' && Array.isArray(defaultValue)) {
+      return `.default([${[defaultValue]}])`
+    }
     return defaultValue !== undefined ? `.default(${defaultValue})` : ''
   }
 
@@ -40,7 +50,7 @@ export class ArrayPropConverter extends PropConverterBase {
     return `${pascalToCamel(this.key)}: z.array(${this.itemName()})\
     ${this.minItemsToZodString(this.cmp.minItems)}\
     ${this.maxItemsToZodString(this.cmp.maxItems)}\
-    ${this.defaultToZodString(this.prop.default as string | undefined)}
+    ${this.defaultToZodString(this.prop.default)}
     `
   }
 }

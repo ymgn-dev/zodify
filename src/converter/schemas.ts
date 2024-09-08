@@ -9,6 +9,7 @@ const dataTypeSchema = z.union([
   z.literal('boolean'),
   z.literal('array'),
   z.literal('object'),
+  z.literal(undefined),
 ])
 
 const stringFormatSchema = z.union([
@@ -41,7 +42,8 @@ const propertySchema = z.object({
   items: z.object({ $ref: z.string() }).optional(),
   minItems: z.number().optional(),
   maxItems: z.number().optional(),
-  default: z.union([z.string(), z.number(), z.boolean()]).optional(),
+  default: z.union([z.string(), z.number(), z.boolean(), z.any()]).optional(),
+  $ref: z.string().optional(),
 })
 
 export const componentSchema = z.object({

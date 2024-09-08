@@ -1,119 +1,97 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
-  title: Swagger Petstore
-  license:
-    name: MIT
-servers:
-  - url: http://petstore.swagger.io/v1
+  title: (title)
+  version: 0000-00-00
+tags: []
 paths:
-  /pets:
+  /users:
     get:
-      summary: List all pets
-      operationId: listPets
-      tags:
-        - pets
+      operationId: Users_list
       parameters:
         - name: limit
           in: query
-          description: How many items to return at one time (max 100)
-          required: false
+          required: true
           schema:
             type: integer
-            maximum: 100
+            format: int32
+        - name: skip
+          in: query
+          required: true
+          schema:
+            type: integer
             format: int32
       responses:
         '200':
-          description: A paged array of pets
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
+          description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pets'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
     post:
-      summary: Create a pet
-      operationId: createPets
-      tags:
-        - pets
+      operationId: Users_create
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        '201':
-          description: Null response
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /pets/{petId}:
+              $ref: '#/components/schemas/User'
+  /users/{id}:
     get:
-      summary: Info for a specific pet
-      operationId: showPetById
-      tags:
-        - pets
+      operationId: Users_get
       parameters:
-        - name: petId
+        - name: id
           in: path
           required: true
-          description: The id of the pet to retrieve
           schema:
             type: string
       responses:
         '200':
-          description: Expected response to a valid request
+          description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/User'
 components:
   schemas:
-    Pet:
+    User:
       type: object
       required:
         - id
         - name
+        - address
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
         name:
           type: string
-        tag:
+        birthday:
           type: string
-    Error:
+          format: date-time
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
       type: object
       required:
-        - code
-        - message
+        - street
+        - city
+        - state
+        - zip
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        street:
           type: string
-    Pets:
-      type: array
-      maxItems: 100
-      items:
-        $ref: '#/components/schemas/Pet'
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
