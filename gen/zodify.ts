@@ -5,11 +5,12 @@ export const addressSchema = z.object({
   city: z.string(),
   state: z.string(),
   zip: z.string(),
+
 })
 
 export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
-  birthday: z.string().datetime(),
+  birthday: z.string().datetime().optional(),
   address: addressSchema.optional(),
 })

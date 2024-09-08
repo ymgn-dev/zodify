@@ -39,6 +39,8 @@ export class StringPropConverter extends PropConverterBase {
     return `${pascalToCamel(this.key)}: z.string()${this.formatToZodString(this.prop.format as StringFormat)}\
     ${this.minLengthToZodString(this.prop.minLength)}\
     ${this.maxLengthToZodString(this.prop.maxLength)}\
-    ${this.defaultToZodString(this.prop.default as string | undefined)}`
+    ${this.defaultToZodString(this.prop.default as string | undefined)}\
+     ${this.optionalToZodString()}
+    `
   }
 }

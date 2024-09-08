@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: (title)
-  version: 0000-00-00
+  version: 0.0.0
 tags: []
 paths:
   /users:
@@ -14,12 +14,14 @@ paths:
           schema:
             type: integer
             format: int32
+          explode: false
         - name: skip
           in: query
           required: true
           schema:
             type: integer
             format: int32
+          explode: false
       responses:
         '200':
           description: The request has succeeded.
@@ -63,22 +65,6 @@ paths:
                 $ref: '#/components/schemas/User'
 components:
   schemas:
-    User:
-      type: object
-      required:
-        - id
-        - name
-        - address
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        birthday:
-          type: string
-          format: date-time
-        address:
-          $ref: '#/components/schemas/Address'
     Address:
       type: object
       required:
@@ -95,3 +81,18 @@ components:
           type: string
         zip:
           type: string
+    User:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        birthday:
+          type: string
+          format: date-time
+        address:
+          $ref: '#/components/schemas/Address'

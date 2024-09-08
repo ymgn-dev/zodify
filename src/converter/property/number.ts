@@ -32,6 +32,8 @@ export class NumberPropConverter extends PropConverterBase {
     return `${pascalToCamel(this.key)}: z.string()${this.formatToZodString(this.prop.format as NumberFormat)}\
     ${this.minToZodString(this.prop.minimum)}\
     ${this.maxToZodString(this.prop.maximum)}\
-    ${this.defaultToZodString(this.prop.default as number | undefined)}`
+    ${this.defaultToZodString(this.prop.default as number | undefined)}\
+    ${this.optionalToZodString()}
+    `
   }
 }

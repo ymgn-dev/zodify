@@ -61,6 +61,7 @@ export type Format = z.infer<typeof stringFormatSchema | typeof numberFormatSche
 export type StringFormat = z.infer<typeof stringFormatSchema>
 export type NumberFormat = z.infer<typeof numberFormatSchema>
 export type Property = z.infer<typeof propertySchema>
+export type Required = z.infer<typeof componentSchema>['required']
 export type Component = z.infer<typeof componentSchema>
 
 export type RefCount = {

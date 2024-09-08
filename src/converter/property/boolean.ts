@@ -8,6 +8,8 @@ export class BooleanPropConverter extends PropConverterBase {
 
   override toZodString() {
     return `${pascalToCamel(this.key)}: z.boolean()\
-    ${this.defaultToZodString(this.prop.default as string | undefined)}`
+    ${this.defaultToZodString(this.prop.default as string | undefined)}\
+    ${this.optionalToZodString()}
+    `
   }
 }

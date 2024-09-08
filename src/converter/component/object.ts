@@ -13,21 +13,21 @@ export class ObjectCmpConverter extends CmpConverterBase {
       let propConverter: PropConverterBase | undefined
       switch (prop.type) {
         case 'string':
-          propConverter = new StringPropConverter(key, prop)
+          propConverter = new StringPropConverter(key, prop, this.cmp.required)
           break
         case 'number':
         case 'integer':
-          propConverter = new NumberPropConverter(key, prop)
+          propConverter = new NumberPropConverter(key, prop, this.cmp.required)
           break
         case 'boolean':
-          propConverter = new BooleanPropConverter(key, prop)
+          propConverter = new BooleanPropConverter(key, prop, this.cmp.required)
           break
         case 'array':
-          propConverter = new ArrayPropConverter(key, prop, this.cmp)
+          propConverter = new ArrayPropConverter(key, prop, this.cmp.required, this.cmp)
           break
         case undefined:
           if (prop.$ref) {
-            propConverter = new RefPropConverter(key, prop)
+            propConverter = new RefPropConverter(key, prop, this.cmp.required)
           }
           break
         // TODO: Add support for other types

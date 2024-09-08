@@ -16,6 +16,6 @@ export class RefPropConverter extends PropConverterBase {
   }
 
   override toZodString() {
-    return `${pascalToCamel(this.key)}: ${this.itemName()}`
+    return `${pascalToCamel(this.key)}: ${this.itemName()}${this.optionalToZodString()}`
   }
 }

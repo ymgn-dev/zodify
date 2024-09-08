@@ -3,15 +3,16 @@ import type { ZodAny } from 'zod'
 import { pascalToCamel } from '../../utils'
 import { refCount } from '../ref-count'
 import { PropConverterBase } from './base'
-import type { Component, Property } from '../schemas'
+import type { Component, Property, Required } from '../schemas'
 
 export class ArrayPropConverter extends PropConverterBase {
   constructor(
     protected readonly key: string,
     protected readonly prop: Property,
+    protected readonly required: Required,
     protected readonly cmp: Component,
   ) {
-    super(key, prop)
+    super(key, prop, required)
   }
 
   minItemsToZodString(minItems?: number) {
@@ -50,7 +51,8 @@ export class ArrayPropConverter extends PropConverterBase {
     return `${pascalToCamel(this.key)}: z.array(${this.itemName()})\
     ${this.minItemsToZodString(this.cmp.minItems)}\
     ${this.maxItemsToZodString(this.cmp.maxItems)}\
-    ${this.defaultToZodString(this.prop.default)}
+    ${this.defaultToZodString(this.prop.default)}\
+    ${this.optionalToZodString()}
     `
   }
 }
