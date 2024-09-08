@@ -2,6 +2,7 @@ import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
+import { ArrayCmpConverter } from './converter/component/array'
 import { EnumCmpConverter } from './converter/component/enum'
 import { ObjectCmpConverter } from './converter/component/object'
 import { refCount } from './converter/ref-count'
@@ -11,13 +12,15 @@ import type { Component } from './converter/schemas'
 
 function convert(cmp: Component) {
   let converter: CmpConverterBase | undefined
-  if (cmp?.enum) {
+  if (cmp.enum) {
     converter = new EnumCmpConverter(cmp)
   }
-  else if (cmp?.properties) {
+  else if (cmp.type === 'object') {
     converter = new ObjectCmpConverter(cmp)
   }
-
+  else if (cmp.type === 'array') {
+    converter = new ArrayCmpConverter(cmp)
+  }
   return converter?.toZodString() ?? ''
 }
 
