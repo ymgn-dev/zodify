@@ -2,7 +2,7 @@ import { assert } from 'node:console'
 import { pascalToCamel } from '../../utils'
 import { refCount } from '../ref-count'
 import { PropConverterBase } from './base'
-import type { Component, Format, NumberFormat, Property } from '../schemas'
+import type { Component, Property } from '../schemas'
 
 export class ArrayPropConverter extends PropConverterBase {
   constructor(

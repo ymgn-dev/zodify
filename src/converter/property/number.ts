@@ -1,6 +1,6 @@
 import { pascalToCamel } from '../../utils'
 import { PropConverterBase } from './base'
-import type { Format, NumberFormat } from '../schemas'
+import type { NumberFormat } from '../schemas'
 
 export class NumberPropConverter extends PropConverterBase {
   minToZodString(minimum?: number) {

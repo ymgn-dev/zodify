@@ -1,6 +1,5 @@
 import { pascalToCamel } from '../../utils'
 import { PropConverterBase } from './base'
-import type { Format, NumberFormat } from '../schemas'
 
 export class BooleanPropConverter extends PropConverterBase {
   defaultToZodString(defaultValue?: string) {
