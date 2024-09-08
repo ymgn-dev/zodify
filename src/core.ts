@@ -1,5 +1,5 @@
 import { assert } from 'node:console'
-import type { Component, DataTypeLiteral, Format } from '../schemas'
+import type { Component, DataTypeLiteral, Format } from './schemas'
 
 function typeToZodType(openApiType: DataTypeLiteral) {
   return openApiType === 'integer' ? 'z.number()' : `z.${openApiType}()`
@@ -58,10 +58,16 @@ function maximumToZodString(maximum?: number) {
   return maximum !== undefined ? `.max(${maximum})` : ''
 }
 
-export function componentToZodString(component: Component) {
-  const schemaType = component.type === 'array' ? 'z.array' : 'z.object'
+function toEnum(cmp: Component) {
+  const enumValues = cmp.enum?.map((v) => {
+    return typeof v === 'string' ? `'${v}'` : v
+  })
+  const enumValuesString = enumValues?.join(', ')
+  return `z.enum([${enumValuesString}])`
+}
 
-  const properties = Object.entries(component.properties ?? {}).map(([key, value]) => {
+function toObject(cmp: Component) {
+  const properties = Object.entries(cmp.properties ?? {}).map(([key, value]) => {
     const { type, format, minLength, maxLength, minimum, maximum } = value
     const typeSchema = typeToZodType(type)
     const formatSchema = formatToZodFormat(format)
@@ -72,6 +78,14 @@ export function componentToZodString(component: Component) {
 
     return `${key}: ${typeSchema}${formatSchema}${minLengthSchema}${maxLengthSchema}${minimumSchema}${maximumSchema}`
   })
+  return `${cmp.type}({\n  ${properties.join(',\n  ')}\n})`
+}
 
-  return `${schemaType}({\n  ${properties.join(',\n  ')}\n})`
+export function componentToZodString(cmp: Component) {
+  if (cmp.enum) {
+    return toEnum(cmp)
+  }
+  if (cmp.properties) {
+    return toObject(cmp)
+  }
 }

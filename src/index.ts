@@ -10,5 +10,5 @@ const components = parsed?.components?.schemas ?? []
 
 for (const key in components) {
   // eslint-disable-next-line no-console
-  console.log(`export const ${camelize(key)}Schema = ${componentToZodString(components[key])}\n\n`)
+  console.log(`export const ${camelize(key)}Schema = ${componentToZodString(components[key])}\n`)
 }
