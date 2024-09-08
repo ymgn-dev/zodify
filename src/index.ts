@@ -62,12 +62,12 @@ function write(components: Record<string, Component>) {
     fs.writeFileSync(filePath, value, { flag: 'a' })
   }
 
-  exec(`npx eslint --fix ${filePath}`, (error, _stdout, stderr) => {
+  exec(`npx prettier --write ${filePath}`, (error, _stdout, stderr) => {
     if (error) {
       console.error(`Error executing eslint: ${error.message}`)
     }
     else if (stderr) {
-      console.error(`Eslint stderr: ${stderr}`)
+      console.error(`Prettier stderr: ${stderr}`)
     }
     // eslint-disable-next-line no-console
     console.log('Successfully generated zod schemas')

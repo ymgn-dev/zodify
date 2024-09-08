@@ -38,6 +38,6 @@ export class ObjectCmpConverter extends CmpConverterBase {
       return propConverter?.toZodString() ?? ''
     })
 
-    return `z.object({\n  ${props.join(',\n  ')}\n})`
+    return `z.object({${props.join(',')}})`
   }
 }
