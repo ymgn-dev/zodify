@@ -1,6 +1,6 @@
 import { assert } from 'node:console'
 import type { ZodAny } from 'zod'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../utils/pascal-to-camel'
 import { refCount } from '../ref-count'
 import { PropConverterBase } from './base'
 import type { Component, Property, Required } from '../schemas'

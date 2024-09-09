@@ -1,4 +1,4 @@
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../utils/pascal-to-camel'
 import { PropConverterBase } from './base'
 import type { NumberFormat } from '../schemas'
 

@@ -1,5 +1,5 @@
 import { assert } from 'node:console'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../utils/pascal-to-camel'
 import { refCount } from '../ref-count'
 import { CmpConverterBase } from './base'
 

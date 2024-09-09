@@ -1,12 +1,14 @@
 import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
+import { Command } from 'commander'
 import yaml from 'yaml'
 import { ArrayCmpConverter } from './converter/component/array'
 import { EnumCmpConverter } from './converter/component/enum'
 import { ObjectCmpConverter } from './converter/component/object'
 import { refCount } from './converter/ref-count'
-import { pascalToCamel } from './utils'
+import { pascalToCamel } from './utils/pascal-to-camel'
 import type { CmpConverterBase } from './converter/component/base'
 import type { Component } from './converter/schemas'
 
@@ -24,8 +26,8 @@ function convert(cmp: Component) {
   return converter?.toZodString() ?? ''
 }
 
-function loadComponents() {
-  const file = fs.readFileSync('sample/openapi.yaml', 'utf8')
+function loadComponents(filePath: string) {
+  const file = fs.readFileSync(filePath, 'utf8')
   const parsed = yaml.parse(file)
 
   const keys = Object.keys(parsed?.components?.schemas ?? [])
@@ -37,9 +39,8 @@ function loadComponents() {
   return (parsed?.components?.schemas ?? []) as Record<string, Component>
 }
 
-function write(components: Record<string, Component>) {
-  const dirPath = path.join(path.resolve(), 'gen')
-  const filePath = path.join(dirPath, 'zodify.ts')
+function write(outPath: string, components: Record<string, Component>) {
+  const dirPath = path.dirname(outPath)
 
   const writePriority: { key: string, value: string }[] = []
   for (const refCountKey of Object.keys(refCount)) {
@@ -55,14 +56,14 @@ function write(components: Record<string, Component>) {
     fs.mkdirSync(dirPath, { recursive: true })
   }
 
-  fs.writeFileSync(filePath, 'import { z } from \'zod\'\n\n', 'utf8')
+  fs.writeFileSync(outPath, 'import { z } from \'zod\'\n\n', 'utf8')
 
   const sorted = writePriority.sort((a, b) => refCount[b.key] - refCount[a.key])
   for (const { value } of sorted) {
-    fs.writeFileSync(filePath, value, { flag: 'a' })
+    fs.writeFileSync(outPath, value, { flag: 'a' })
   }
 
-  exec(`npx prettier --write ${filePath}`, (error, _stdout, stderr) => {
+  exec(`npx prettier --write ${outPath}`, (error, _stdout, stderr) => {
     if (error) {
       console.error(`Error executing eslint: ${error.message}`)
     }
@@ -74,5 +75,18 @@ function write(components: Record<string, Component>) {
   })
 }
 
-const components = loadComponents()
-write(components)
+interface Options {
+  input: string
+  output: string
+}
+
+const program = new Command()
+program
+  .requiredOption('-i, --input <type>', 'Input file')
+  .requiredOption('-o, --output <type>', 'Output file')
+  .parse(process.argv)
+
+const options = program.opts<Options>()
+
+const components = loadComponents(options.input)
+write(options.output, components)

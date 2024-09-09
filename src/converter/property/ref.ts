@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../utils/pascal-to-camel'
 import { refCount } from '../ref-count'
 import { PropConverterBase } from './base'
 
