@@ -17,4 +17,6 @@ It is still under development, but it will be available as shown below.
 
 ```bash
 npx zodify -i docs/openapi.yaml -o ./gen/schemas.ts
+# or
+npm run build && node dist/index.mjs -i ./sample/petstore.yaml -o ./gen/petstore.ts
 ```
