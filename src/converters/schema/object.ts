@@ -88,9 +88,10 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
           break
       }
     }
-    return `${this.schema.description ? `// ${this.schema.description}` : ''}
-    ${this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''}z.object({
-      ${propertyConverters.map(converter => converter.convert()).join('')}
+    const comment = this.schema.description ? `// ${this.schema.description}\n` : ''
+    const name = this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''
+    return `${comment}${name}z.object({
+      ${propertyConverters.map(converter => converter.convert()).join('\n')}
     })`
   }
 }

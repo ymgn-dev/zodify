@@ -44,8 +44,6 @@ model SampleModel {
 上記のモデルは次のように変換されます。
 
 ```ts
-import { z } from 'zod'
-
 // モデルのコメントです
 export const sampleModelSchema = z.object({
   // モデルの ID です
@@ -139,13 +137,8 @@ model Sample {
 ```ts
 export const sampleSchema = z.object({
   a: z.number().optional(),
-
   b: z.number().default(42),
-
-  c: z
-    .number()
-    .optional()
-    .default(3.14),
+  c: z.number().optional().default(3.14),
 })
 ```
 
@@ -240,9 +233,7 @@ model Sample {
 ```ts
 export const sampleSchema = z.object({
   a: z.string().optional(),
-
   b: z.string().default('サンプル文字列'),
-
   c: z.string().optional().default('サンプル文字列'),
 })
 ```
@@ -303,9 +294,7 @@ model Sample {
 ```ts
 export const sampleSchema = z.object({
   a: z.boolean().optional(),
-
   b: z.boolean().default(true),
-
   c: z.boolean().optional().default(false),
 })
 ```
@@ -358,9 +347,7 @@ model Sample {
 ```ts
 export const sampleSchema = z.object({
   a: z.array(z.string()).optional(),
-
   b: z.array(z.string()).default(['sample1', 'sample2']),
-
   c: z.array(z.string()).optional().default([]),
 })
 ```

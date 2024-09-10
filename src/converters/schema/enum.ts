@@ -27,9 +27,8 @@ export class EnumNumberSchemaConverter extends SchemaConverterBase {
   }
 
   override convert() {
-    return `${this.schema.description ? `// ${this.schema.description}` : ''}
-    ${this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''}z.enum([
-      ${this.schema.enum.join(',\n')}
-    ])`
+    const comment = this.schema.description ? `// ${this.schema.description}\n` : ''
+    const name = this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''
+    return `${comment}${name}z.enum([${this.schema.enum.join(',\n')}])`
   }
 }

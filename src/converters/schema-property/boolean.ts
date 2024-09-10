@@ -19,7 +19,10 @@ export class BooleanPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.boolean()${!this.required ? '.optional()' : ''}${this.convertDefault()},`
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const required = !this.required ? '.optional()' : ''
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}z.boolean()${required}${defaultValue},`
   }
 }

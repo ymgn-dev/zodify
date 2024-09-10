@@ -39,12 +39,13 @@ export class NumberPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName}: z.number()
-    ${this.convertMinimum()}
-    ${this.convertMaximum()}
-    ${!this.required ? '.optional()' : ''}
-    ${this.convertDefault()},`
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const required = !this.required ? '.optional()' : ''
+    const min = this.convertMinimum().trim()
+    const max = this.convertMaximum().trim()
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}z.number()${min}${max}${required}${defaultValue},`
   }
 }
 
@@ -86,7 +87,12 @@ export class IntegerPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.number()${this.convertMinimum()}${this.convertMaximum()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const required = !this.required ? '.optional()' : ''
+    const min = this.convertMinimum().trim()
+    const max = this.convertMaximum().trim()
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}z.number()${min}${max}${required}${defaultValue},`
   }
 }

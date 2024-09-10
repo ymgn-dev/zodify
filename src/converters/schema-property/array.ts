@@ -66,6 +66,8 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
       case 'boolean': {
         return new BooleanPropertyConverter(this.schemaName, '', { type }, true).convert()
       }
+      default:
+        return ''
     }
   }
 
@@ -115,10 +117,14 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    const itemRef = this.convertItemRef()
-    const itemType = this.convertItemType()
-
-    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.array(${itemRef === '' ? itemType : itemRef})${this.convertMinItems()}${this.convertMaxItems()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const itemRef = this.convertItemRef().trim()
+    const itemType = this.convertItemType().trim()
+    const min = this.convertMinItems().trim()
+    const max = this.convertMaxItems().trim()
+    const required = !this.required ? '.optional()' : ''
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}z.array(${itemRef !== '' ? itemRef : itemType})${min}${max}${required}${defaultValue},`
   }
 }

@@ -42,7 +42,13 @@ export class RefPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}${this.convertRef()}${this.convertMinItems()}${this.convertMaxItems()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const ref = this.convertRef().trim()
+    const min = this.convertMinItems().trim()
+    const max = this.convertMaxItems().trim()
+    const required = !this.required ? '.optional()' : ''
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}${ref}${min}${max}${required}${defaultValue},`
   }
 }
