@@ -94,7 +94,7 @@ export class YamlSchemaManager {
 
     fs.writeFileSync(this.writeFilePath, 'import { z } from \'zod\'\n\n', 'utf8')
     for (const name of sortedDependencies) {
-      fs.writeFileSync(this.writeFilePath, `${this.outputs[name]}\n`, { flag: 'a' })
+      fs.writeFileSync(this.writeFilePath, `${this.outputs[name]}\n\n`, { flag: 'a' })
     }
 
     exec(`npx prettier --write ${this.writeFilePath}`, (error, _stdout, stderr) => {
