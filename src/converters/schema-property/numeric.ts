@@ -45,7 +45,7 @@ export class NumberPropertyConverter extends SchemaPropertyConverterBase {
     ${this.convertMinimum()}
     ${this.convertMaximum()}
     ${!this.required ? '.optional()' : ''}
-    ${this.convertDefault()}
+    ${this.convertDefault()},
     `
   }
 }
