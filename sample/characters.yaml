@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    Character:
+      type: object
+      required:
+        - id
+        - name
+        - power
+        - skills
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 2
+          maxLength: 10
+          description: Character name
+        power:
+          type: integer
+          format: int16
+          description: power number
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+          maxItems: 2
+          default: []
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      description: Character model
+    EnumType:
+      type: string
+      enum:
+        - ROSA
+        - MICO
+        - NITA
+      description: Enum type
+    Skill:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 2
+          maxLength: 10
+          description: Skill name
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      description: Character skill model
