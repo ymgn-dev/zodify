@@ -22,6 +22,43 @@ node dist/index.mjs -i ./path/to/openapi.yaml -o ./path/to/output.ts
 
 ## サポートする文法
 
+### コメントデコレータ
+
+`@doc()` デコレータを使用することで、モデルやプロパティにコメントを付けることができます。
+
+```tsp
+@doc("モデルのコメントです")
+model SampleModel {
+  @doc("モデルの ID です")
+  @format("uuid")
+  id: string;
+
+  @doc("作成日")
+  createdAt: utcDateTime;
+
+  @doc("更新日")
+  updatedAt: utcDateTime;
+}
+```
+
+上記のモデルは次のように変換されます。
+
+```ts
+import { z } from 'zod'
+
+// モデルのコメントです
+export const sampleModelSchema = z.object({
+  // モデルの ID です
+  id: z.string().uuid(),
+
+  // 作成日
+  createdAt: z.string().datetime(),
+
+  // 更新日
+  updatedAt: z.string().datetime(),
+})
+```
+
 ### モデル
 
 トップレベルのモデル定義を行うための文法です。
@@ -83,6 +120,35 @@ enum  EnumSample {
 | `@minValueExclusive(8)` | `z.number().gt(8)` に変換されます |
 | `@maxValueExclusive(8)` | `z.number().lt(8)` に変換されます |
 
+#### その他補足
+
+Typespec のモデルのプロパティをオプショナルにする場合は、 `?` を付けてください。
+また、デフォルト値を設定する場合は、次のように `=` を使用してください。
+オプショナルとデフォルト値を併用することもできます。
+
+```tsp
+model Sample {
+  a?: int32;
+  b: integer = 42;
+  c?: float = 3.14;
+}
+```
+
+上記のモデルは次のように変換されます。
+
+```ts
+export const sampleSchema = z.object({
+  a: z.number().optional(),
+
+  b: z.number().default(42),
+
+  c: z
+    .number()
+    .optional()
+    .default(3.14),
+})
+```
+
 <details>
 
 <summary>TypeSpec の定義例</summary>
@@ -97,8 +163,12 @@ model NumericValues {
   @minValueExclusive(8)
   @maxValueExclusive(16)
   b: integer;
+
+  @doc("任意入力")
   c: float;
-  d: int64;
+
+  @doc("デフォルト値あり")
+  d: int64 = 42;
   e: int32;
   f: int16;
   g: int8;
@@ -151,6 +221,32 @@ model NumericValues {
 | `@format("cuid")` | `z.string().cuid()` に変換されます |
 | `@format("ip")` | `z.string().ip()` に変換されます |
 
+#### その他補足
+
+Typespec のモデルのプロパティをオプショナルにする場合は、 `?` を付けてください。
+また、デフォルト値を設定する場合は、次のように `=` を使用してください。
+オプショナルとデフォルト値を併用することもできます。
+
+```tsp
+model Sample {
+  a?: string;
+  b: string = "サンプル文字列";
+  c?: string = "サンプル文字列";
+}
+```
+
+上記のモデルは次のように変換されます。
+
+```ts
+export const sampleSchema = z.object({
+  a: z.string().optional(),
+
+  b: z.string().default('サンプル文字列'),
+
+  c: z.string().optional().default('サンプル文字列'),
+})
+```
+
 <details>
 
 <summary>TypeSpec の定義例</summary>
@@ -188,6 +284,32 @@ model StringValues {
 | --- | --- |
 | boolean | `z.boolean()` に変換されます |
 
+#### その他補足
+
+Typespec のモデルのプロパティをオプショナルにする場合は、 `?` を付けてください。
+また、デフォルト値を設定する場合は、次のように `=` を使用してください。
+オプショナルとデフォルト値を併用することもできます。
+
+```tsp
+model Sample {
+  a?: boolean;
+  b: boolean = true;
+  c?: boolean = false;
+}
+```
+
+上記のモデルは次のように変換されます。
+
+```ts
+export const sampleSchema = z.object({
+  a: z.boolean().optional(),
+
+  b: z.boolean().default(true),
+
+  c: z.boolean().optional().default(false),
+})
+```
+
 <details>
 
 <summary>TypeSpec の定義例</summary>
@@ -217,6 +339,32 @@ model BooleanValues {
 | --- | --- |
 | `@minItems(42)` | `z.array(...).min(4)` に変換されます |
 | `@maxItems(42)` | `z.array(...).max(4)` に変換されます |
+
+#### その他補足
+
+Typespec のモデルのプロパティをオプショナルにする場合は、 `?` を付けてください。
+また、デフォルト値を設定する場合は、次のように `=` を使用してください。
+オプショナルとデフォルト値を併用することもできます。
+
+```tsp
+model Sample {
+  a?: string[];
+  b: string[] = #["sample1", "sample2"];
+  c?: string[] = #[];
+}
+```
+
+上記のモデルは次のように変換されます。
+
+```ts
+export const sampleSchema = z.object({
+  a: z.array(z.string()).optional(),
+
+  b: z.array(z.string()).default([]),
+
+  c: z.array(z.string()).optional().default([]),
+})
+```
 
 <details>
 

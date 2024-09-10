@@ -109,8 +109,12 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   convertDefault() {
-    if (this.schemaProperty.default === undefined) {
+    const dVal = this.schemaProperty.default
+    if (dVal === undefined) {
       return ''
+    }
+    if (dVal.every(i => typeof i === 'string')) {
+      return `.default([${dVal.map(i => `'${i}'`).join(', ')}])`
     }
     return `.default([${this.schemaProperty.default}])`
   }

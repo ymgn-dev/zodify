@@ -1,21 +1,37 @@
 import { z } from "zod";
 
-export const sampleSchema = z.object({
-  a: z.string().date(),
+export const aSampleSchema = z.object({
+  a: z.array(z.string()).optional(),
 
-  b: z.string().time(),
+  b: z.array(z.string()).default(["sample1", "sample2"]),
 
-  c: z.string().datetime(),
+  c: z.array(z.string()).optional().default([]),
+});
 
-  d: z.string().duration(),
+export const bSampleSchema = z.object({
+  a: z.boolean().optional(),
 
-  e: z.string().url(),
+  b: z.boolean().default(true),
 
-  f: z.string().email(),
+  c: z.boolean().optional().default(false),
+});
 
-  g: z.string().uuid(),
+export const iSampleSchema = z.object({
+  a: z.number().optional(),
 
-  h: z.string().cuid(),
+  b: z.number().default(42),
 
-  i: z.string().ip(),
+  c: z
+    .number()
+
+    .optional()
+    .default(3.14),
+});
+
+export const sSampleSchema = z.object({
+  a: z.string().optional(),
+
+  b: z.string().default("サンプル文字列"),
+
+  c: z.string().optional().default("サンプル文字列"),
 });

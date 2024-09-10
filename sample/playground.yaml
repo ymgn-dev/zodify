@@ -6,43 +6,64 @@ tags: []
 paths: {}
 components:
   schemas:
-    Sample:
+    ASample:
       type: object
       required:
-        - a
         - b
-        - c
-        - d
-        - e
-        - f
-        - g
-        - h
-        - i
+      properties:
+        a:
+          type: array
+          items:
+            type: string
+        b:
+          type: array
+          items:
+            type: string
+          default:
+            - sample1
+            - sample2
+        c:
+          type: array
+          items:
+            type: string
+          default: []
+    BSample:
+      type: object
+      required:
+        - b
+      properties:
+        a:
+          type: boolean
+        b:
+          type: boolean
+          default: true
+        c:
+          type: boolean
+          default: false
+    ISample:
+      type: object
+      required:
+        - b
+      properties:
+        a:
+          type: integer
+          format: int32
+        b:
+          type: integer
+          default: 42
+        c:
+          type: number
+          default: 3.14
+    SSample:
+      type: object
+      required:
+        - b
       properties:
         a:
           type: string
-          format: date
         b:
           type: string
-          format: time
+          default: サンプル文字列
         c:
           type: string
-          format: date-time
-        d:
-          type: string
-          format: duration
-        e:
-          type: string
-          format: uri
-        f:
-          type: string
-          format: email
-        g:
-          type: string
-          format: uuid
-        h:
-          type: string
-          format: cuid
-        i:
-          type: string
-          format: ip
+          default: サンプル文字列
