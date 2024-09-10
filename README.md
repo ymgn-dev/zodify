@@ -37,14 +37,14 @@ node dist/index.mjs -i ./path/to/openapi.yaml -o ./path/to/output.ts
 <summary>TypeSpec の定義例</summary>
 
 ```tsp
-model NormalModel {
+model SampleModel {
   a: numeric;
   b: string;
 }
 
-model NormalArrayModel is Array<NormalModel> {}
+model ArraySampleModel is Array<SampleModel> {}
 
-enum  NormalEnum {
+enum  EnumSample {
   A,
   B,
   C
@@ -78,10 +78,10 @@ enum  NormalEnum {
 
 | デコレータ | 補足 |
 | --- | --- |
-| `@minValue(42)` | `z.number().gte(4)` に変換されます |
-| `@maxValue(42)` | `z.number().lte(4)` に変換されます |
-| `@minValueExclusive(8)` | `z.number().gt(4)` に変換されます |
-| `@maxValueExclusive(8)` | `z.number().lt(4)` に変換されます |
+| `@minValue(42)` | `z.number().gte(42)` に変換されます |
+| `@maxValue(42)` | `z.number().lte(42)` に変換されます |
+| `@minValueExclusive(8)` | `z.number().gt(8)` に変換されます |
+| `@maxValueExclusive(8)` | `z.number().lt(8)` に変換されます |
 
 <details>
 
@@ -90,7 +90,12 @@ enum  NormalEnum {
 ```tsp
 @doc("数値")
 model NumericValues {
+  @minValue(42)
+  @maxValue(95)
   a: numeric;
+
+  @minValueExclusive(8)
+  @maxValueExclusive(16)
   b: integer;
   c: float;
   d: int64;
@@ -153,10 +158,20 @@ model NumericValues {
 ```tsp
 @doc("文字列")
 model StringValues {
+  @minLength(42)
+  @maxLength(96)
   a: string;
+
+  @format("date-time")
   b: plainDate;
+
+  @format("uri")
   c: plainTime;
+
+  @format("email")
   d: utcDateTime;
+
+  @format("uuid")
   e: offsetDateTime;
   f: duration;
   g: url;
@@ -188,10 +203,11 @@ model BooleanValues {
 
 ---
 
-### 配列・オブジェクト
+### 配列・オブジェクト・列挙型
 
 > [!WARNING]
 > `Record<Element>` は現状サポートしていません。
+> 列挙型( `` )
 
 | 型 | 補足 |
 | --- | --- |
@@ -209,7 +225,10 @@ model BooleanValues {
 ```tsp
 @doc("配列")
 model ArrayValues {
+  @minItems(42)
+  @maxItems(96)
   a: string[];
+
   b: OtherModel[];
 }
 ```
