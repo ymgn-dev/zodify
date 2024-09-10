@@ -17,7 +17,7 @@ export const skillSchema = z.object({
 
 // Character model
 export const characterSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().email(),
 
   // Character name
   name: z.string().min(2).max(10),

@@ -1,0 +1,51 @@
+# @doc("文字列のテスト")
+# model StringTest {
+#   a: string;
+#   b: plainDate;
+#   c: plainTime;
+#   d: utcDateTime;
+#   e: offsetDateTime;
+#   f: duration;
+#   g: url;
+# }
+
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    StringTest:
+      type: object
+      required:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+        - g
+      properties:
+        a:
+          type: string
+        b:
+          type: string
+          format: date
+        c:
+          type: string
+          format: time
+        d:
+          type: string
+          format: date-time
+        e:
+          type: string
+          format: date-time
+        f:
+          type: string
+          format: duration
+        g:
+          type: string
+          format: uri
+      description: 文字列のテスト

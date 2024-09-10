@@ -1,0 +1,94 @@
+# @doc("数値のテスト")
+# model NumericTest {
+#   a: numeric;
+#   b: integer;
+#   c: float;
+#   d: int64;
+#   e: int32;
+#   f: int16;
+#   g: int8;
+#   h: safeint;
+#   i: uint64;
+#   j: uint32;
+#   k: uint16;
+#   l: uint8;
+#   m: float64;
+#   n: float32;
+#   o: decimal;
+#   p: decimal128;
+# }
+
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    NumericTest:
+      type: object
+      required:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+        - g
+        - h
+        - i
+        - j
+        - k
+        - l
+        - m
+        - n
+        - o
+        - p
+      properties:
+        a:
+          type: number
+        b:
+          type: integer
+        c:
+          type: number
+        d:
+          type: integer
+          format: int64
+        e:
+          type: integer
+          format: int32
+        f:
+          type: integer
+          format: int16
+        g:
+          type: integer
+          format: int8
+        h:
+          type: integer
+          format: int64
+        i:
+          type: integer
+          format: uint64
+        j:
+          type: integer
+          format: uint32
+        k:
+          type: integer
+          format: uint16
+        l:
+          type: integer
+          format: uint8
+        m:
+          type: number
+          format: double
+        n:
+          type: number
+          format: float
+        o:
+          type: number
+          format: decimal
+        p:
+          type: number
+          format: decimal128
+      description: 数値のテスト

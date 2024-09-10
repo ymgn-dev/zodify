@@ -1,0 +1,48 @@
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    Sample:
+      type: object
+      required:
+        - a
+        - b
+        - c
+        - d
+        - e
+        - f
+        - g
+        - h
+        - i
+      properties:
+        a:
+          type: string
+          format: date
+        b:
+          type: string
+          format: time
+        c:
+          type: string
+          format: date-time
+        d:
+          type: string
+          format: duration
+        e:
+          type: string
+          format: uri
+        f:
+          type: string
+          format: email
+        g:
+          type: string
+          format: uuid
+        h:
+          type: string
+          format: cuid
+        i:
+          type: string
+          format: ip

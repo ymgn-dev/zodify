@@ -1,0 +1,23 @@
+# @doc("配列のテスト")
+# model ArrayTest {
+#   a: string[];
+# }
+
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    ArrayTest:
+      type: object
+      required:
+        - a
+      properties:
+        a:
+          type: array
+          items:
+            type: string
+      description: 配列のテスト
