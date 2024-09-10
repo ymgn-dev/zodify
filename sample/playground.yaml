@@ -1,69 +1,817 @@
 openapi: 3.0.0
 info:
-  title: (title)
-  version: 0.0.0
-tags: []
-paths: {}
+  title: Portfolio API
+  version: 1.0.0
+tags:
+  - name: Post
+  - name: Category
+  - name: Admin - Post
+  - name: Admin - Category
+paths:
+  /admin/categories:
+    post:
+      operationId: AdminCategoryOperations_create
+      summary: 【要認証】カテゴリを作成
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryCreate'
+  /admin/categories/{id}:
+    patch:
+      operationId: AdminCategoryOperations_update
+      summary: 【要認証】カテゴリを更新
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryUpdate'
+    delete:
+      operationId: AdminCategoryOperations_delete
+      summary: 【要認証】カテゴリを削除
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Category
+  /admin/count/posts:
+    get:
+      operationId: AdminCountPostOperations_get
+      summary: 【要認証】記事の合計件数を取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+  /admin/posts:
+    get:
+      operationId: AdminPostOperations_list
+      summary: 【要認証】記事一覧を取得
+      parameters:
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: skip
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminPost'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+    post:
+      operationId: AdminPostOperations_create
+      summary: 【要認証】記事を作成
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostComment'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostCreate'
+  /admin/posts/{id}:
+    get:
+      operationId: AdminPostOperations_get
+      summary: 【要認証】記事を取得
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPost'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+    patch:
+      operationId: AdminPostOperations_update
+      summary: 【要認証】記事を更新
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPost'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostUpdate'
+    delete:
+      operationId: AdminPostOperations_delete
+      summary: 【要認証】記事を削除
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+  /admin/posts/{id}/comments:
+    post:
+      operationId: AdminPostCommentOperations_create
+      summary: 【要認証】記事の管理者コメントを作成
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostComment'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCommentCreate'
+  /admin/posts/{id}/comments/{commentId}:
+    delete:
+      operationId: AdminPostCommentOperations_delete
+      summary: 【要認証】記事の管理者コメントを削除
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+  /admin/posts/{id}/drafts:
+    post:
+      operationId: AdminPostDraftOperations_create
+      summary: 【要認証】記事の下書きを作成
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminPostDraft'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostDraftCreate'
+  /admin/posts/{id}/publish:
+    patch:
+      operationId: AdminPostPublishOperations_update
+      summary: 【要認証】記事を公開
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+  /admin/posts/{id}/unpublish:
+    patch:
+      operationId: AdminPostUnpublishOperations_update
+      summary: 【要認証】記事を非公開
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - Admin - Post
+  /categories:
+    get:
+      operationId: CategoryOperations_list
+      summary: カテゴリ一覧を取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Category
+  /count/posts:
+    get:
+      operationId: CountPostOperations_get
+      summary: 公開記事の合計件数を取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Count'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Post
+  /posts:
+    get:
+      operationId: PostOperations_list
+      summary: 公開記事一覧を取得
+      parameters:
+        - name: take
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: skip
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Post
+  /posts/{id}:
+    get:
+      operationId: PostOperations_get
+      summary: 公開記事を取得
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Post
+  /posts/{id}/comments:
+    get:
+      operationId: PostCommentOperations_list
+      summary: 記事のコメント一覧を取得
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostComment'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Post
+    post:
+      operationId: PostCommentOperations_create
+      summary: 記事のコメントを作成
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostComment'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+      tags:
+        - Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCommentCreate'
 components:
   schemas:
-    ASample:
+    AdminPost:
       type: object
       required:
-        - b
+        - id
+        - title
+        - content
+        - categories
+        - coverImageUrl
+        - createdAt
+        - updatedAt
+        - published
       properties:
-        a:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
           type: array
           items:
-            type: string
-        b:
-          type: array
-          items:
-            type: string
-          default:
-            - sample1
-            - sample2
-        c:
-          type: array
-          items:
-            type: string
+            $ref: '#/components/schemas/Category'
+          minItems: 1
+          description: 投稿のカテゴリ
           default: []
-    BSample:
+        coverImageUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        published:
+          type: boolean
+      description: 管理者用 - 投稿モデル
+    AdminPostCreate:
       type: object
       required:
-        - b
+        - title
+        - content
+        - categories
+        - coverImageUrl
+        - published
       properties:
-        a:
+        title:
+          type: string
+        content:
+          type: string
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryCreateItem'
+          minItems: 1
+          description: 投稿のカテゴリ
+          default: []
+        coverImageUrl:
+          type: string
+          format: uri
+        published:
           type: boolean
-        b:
-          type: boolean
-          default: true
-        c:
-          type: boolean
-          default: false
-    ISample:
+      description: 管理者用 - 投稿モデル
+    AdminPostDraft:
       type: object
       required:
-        - b
+        - id
+        - title
+        - content
+        - categories
+        - coverImageUrl
+        - createdAt
+        - updatedAt
+        - postId
       properties:
-        a:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+          minItems: 1
+          description: 投稿のカテゴリ
+          default: []
+        coverImageUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+        postId:
+          type: string
+          format: uuid
+          readOnly: true
+      description: 管理者用 - 投稿下書きモデル
+    AdminPostDraftCreate:
+      type: object
+      required:
+        - title
+        - content
+        - categories
+        - coverImageUrl
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryCreateItem'
+          minItems: 1
+          description: 投稿のカテゴリ
+          default: []
+        coverImageUrl:
+          type: string
+          format: uri
+      description: 管理者用 - 投稿下書きモデル
+    AdminPostUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+          minItems: 1
+          description: 投稿のカテゴリ
+          default: []
+        coverImageUrl:
+          type: string
+          format: uri
+        published:
+          type: boolean
+      description: 管理者用 - 投稿モデル
+    Category:
+      type: object
+      required:
+        - id
+        - name
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 24
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      description: カテゴリモデル
+    CategoryCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 24
+      description: カテゴリモデル
+    CategoryCreateItem:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 24
+      description: カテゴリモデル
+    CategoryUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 24
+      description: カテゴリモデル
+    Count:
+      type: object
+      required:
+        - count
+      properties:
+        count:
           type: integer
           format: int32
-        b:
-          type: integer
-          default: 42
-        c:
-          type: number
-          default: 3.14
-    SSample:
+      description: カウントモデル
+    Post:
       type: object
       required:
-        - b
+        - id
+        - title
+        - content
+        - categories
+        - coverImageUrl
+        - createdAt
+        - updatedAt
       properties:
-        a:
+        id:
           type: string
-        b:
+          format: uuid
+        title:
           type: string
-          default: サンプル文字列
-        c:
+        content:
           type: string
-          default: サンプル文字列
+          description: 投稿内容(データのフォーマットは JSON 文字列)
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+          minItems: 1
+          description: 投稿のカテゴリ
+          default: []
+        coverImageUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      description: 投稿モデル
+    PostComment:
+      type: object
+      required:
+        - id
+        - postId
+        - isAdmin
+        - path
+        - content
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        postId:
+          type: string
+          format: uuid
+        isAdmin:
+          type: boolean
+          readOnly: true
+        path:
+          type: string
+          minLength: 1
+          description: 経路列挙モデルのパス(ex. /comment_a_id/comment_b_id)
+        content:
+          type: string
+          description: 投稿へのコメント内容(データのフォーマットは JSON 文字列)
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      description: 投稿コメントモデル
+    PostCommentCreate:
+      type: object
+      required:
+        - path
+        - content
+      properties:
+        path:
+          type: string
+          minLength: 1
+          description: 経路列挙モデルのパス(ex. /comment_a_id/comment_b_id)
+        content:
+          type: string
+          description: 投稿へのコメント内容(データのフォーマットは JSON 文字列)
+      description: 投稿コメントモデル
+    Versions:
+      type: string
+      enum:
+        - 1.0.0
+servers:
+  - url: https://yaichi42-pf-api.fly.dev
+    description: Development server endpoint
+    variables: {}
+  - url: https://example.com
+    description: Production server endpoint
+    variables: {}
