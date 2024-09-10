@@ -329,7 +329,6 @@ model BooleanValues {
 
 > [!WARNING]
 > `Record<Element>` は現状サポートしていません。
-> 列挙型( `` )
 
 | 型 | 補足 |
 | --- | --- |
