@@ -9,9 +9,7 @@ export const skillSchema = z.object({
 
   // Skill name
   name: z.string().min(2).max(10),
-
   createdAt: z.string().datetime(),
-
   updatedAt: z.string().datetime(),
 });
 
@@ -24,10 +22,7 @@ export const characterSchema = z.object({
 
   // power number
   power: z.number(),
-
   skills: z.array(skillSchema).max(2).default([]),
-
   createdAt: z.string().datetime(),
-
   updatedAt: z.string().datetime(),
 });
