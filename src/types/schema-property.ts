@@ -21,3 +21,4 @@ export type RefSchemaProperty = z.infer<typeof refSchemaPropertyValidator>
 export type StringSchemaPropertyFormat = z.infer<typeof stringSchemaPropertyFormatValidator>
 export type NumberSchemaPropertyFormat = z.infer<typeof numberSchemaPropertyFormatValidator>
 export type IntegerSchemaPropertyFormat = z.infer<typeof integerSchemaPropertyFormatValidator>
+export type AnySchemaPropertyFormat = StringSchemaPropertyFormat | NumberSchemaPropertyFormat | IntegerSchemaPropertyFormat

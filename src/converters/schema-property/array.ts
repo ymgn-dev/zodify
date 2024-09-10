@@ -7,6 +7,7 @@ import {
 } from '.'
 import { pascalToCamel, YamlSchemaManager } from '../../utils'
 import type {
+  AnySchemaPropertyFormat,
   ArraySchemaProperty,
   IntegerSchemaPropertyFormat,
   NumberSchemaPropertyFormat,
@@ -26,10 +27,7 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
 
   convertItem(
     type: SchemaDataType,
-    format?:
-      | StringSchemaPropertyFormat
-      | NumberSchemaPropertyFormat
-      | IntegerSchemaPropertyFormat,
+    format?: AnySchemaPropertyFormat,
   ) {
     switch (type) {
       case 'string': {
@@ -87,10 +85,7 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
     }
     return this.convertItem(
       type,
-      this.schemaProperty.items.format as
-      | StringSchemaPropertyFormat
-      | NumberSchemaPropertyFormat
-      | IntegerSchemaPropertyFormat,
+      this.schemaProperty.items.format as AnySchemaPropertyFormat,
     )
   }
 

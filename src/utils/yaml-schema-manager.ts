@@ -16,7 +16,7 @@ import {
   objectSchemaValidator,
 } from '../validators/schema'
 import { topologicalSort } from './topological-sort'
-import type { ComponentSchemas } from '../types'
+import type { AnySchema } from '../types'
 
 export class YamlSchemaManager {
   constructor(
@@ -26,7 +26,7 @@ export class YamlSchemaManager {
     this.initialize()
   }
 
-  private static schemas: ComponentSchemas = []
+  private static schemas: Map<string, AnySchema> = new Map()
 
   // Schema name, schema output
   private outputs: Record<string, string> = {}
@@ -40,10 +40,7 @@ export class YamlSchemaManager {
     const yamlFile = yaml.parse(file)
 
     for (const key of Object.keys(yamlFile?.components?.schemas ?? [])) {
-      YamlSchemaManager.schemas.push({
-        name: key,
-        schema: yamlFile.components.schemas[key],
-      })
+      YamlSchemaManager.schemas.set(key, yamlFile.components.schemas[key])
       YamlSchemaManager.schemaDeps[key] = []
     }
   }
@@ -57,29 +54,29 @@ export class YamlSchemaManager {
   }
 
   public convert() {
-    for (const s of YamlSchemaManager.schemas) {
-      if (arraySchemaValidator.safeParse(s.schema).success) {
-        const arraySchema = arraySchemaValidator.parse(s.schema)
-        const output = new ArraySchemaConverter(s.name, arraySchema).convert()
-        this.outputs[s.name] = output
+    for (const [key, value] of YamlSchemaManager.schemas) {
+      if (arraySchemaValidator.safeParse(value).success) {
+        const arraySchema = arraySchemaValidator.parse(value)
+        const output = new ArraySchemaConverter(key, arraySchema).convert()
+        this.outputs[key] = output
       }
-      else if (enumStringSchemaValidator.safeParse(s.schema).success) {
-        const enumSchema = enumStringSchemaValidator.parse(s.schema)
-        const output = new EnumStringSchemaConverter(s.name, enumSchema).convert()
-        this.outputs[s.name] = output
+      else if (enumStringSchemaValidator.safeParse(value).success) {
+        const enumSchema = enumStringSchemaValidator.parse(value)
+        const output = new EnumStringSchemaConverter(key, enumSchema).convert()
+        this.outputs[key] = output
       }
-      else if (enumNumberSchemaValidator.safeParse(s.schema).success) {
-        const enumSchema = enumNumberSchemaValidator.parse(s.schema)
-        const output = new EnumNumberSchemaConverter(s.name, enumSchema).convert()
-        this.outputs[s.name] = output
+      else if (enumNumberSchemaValidator.safeParse(value).success) {
+        const enumSchema = enumNumberSchemaValidator.parse(value)
+        const output = new EnumNumberSchemaConverter(key, enumSchema).convert()
+        this.outputs[key] = output
       }
-      else if (objectSchemaValidator.safeParse(s.schema).success) {
-        const objectSchema = objectSchemaValidator.parse(s.schema)
-        const output = new ObjectSchemaConverter(s.name, objectSchema).convert()
-        this.outputs[s.name] = output
+      else if (objectSchemaValidator.safeParse(value).success) {
+        const objectSchema = objectSchemaValidator.parse(value)
+        const output = new ObjectSchemaConverter(key, objectSchema).convert()
+        this.outputs[key] = output
       }
       else {
-        assert(false, `Schema ${s.name} is not a valid schema`)
+        assert(false, `Schema ${key} is not a valid schema`)
       }
     }
   }
