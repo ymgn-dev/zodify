@@ -23,6 +23,7 @@ node dist/index.mjs -i ./path/to/openapi.yaml -o ./path/to/output.ts
 ## サポートする文法
 
 ### モデル
+---
 
 トップレベルのモデル定義を行うための文法です。
 
@@ -54,6 +55,7 @@ enum  NormalEnum {
 </details>
 
 ### 数値
+---
 
 | 型 | 補足 |
 | --- | --- |
@@ -110,6 +112,7 @@ model NumericValues {
 </details>
 
 ### 文字列
+---
 
 > [!WARNING]
 > `bytes` は Zod の定義にないためサポートしていません。
@@ -162,6 +165,7 @@ model StringValues {
 </details>
 
 ### 論理値
+---
 
 | 型 | 補足 |
 | --- | --- |
@@ -209,6 +213,7 @@ model ArrayValues {
 </details>
 
 ### その他
+---
 
 > [!WARNING]
 > `null`, `unknown`, `void`, `never` は現状サポートしていません。
