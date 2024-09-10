@@ -195,7 +195,7 @@ model NumericValues {
 | string | `z.string()` に変換されます |
 | plainDate | `z.string().date()` に変換されます |
 | plainTime | `z.string().time()` に変換されます |
-| utcDateTim | `z.string().datetime()` に変換されます |
+| utcDateTime | `z.string().datetime()` に変換されます |
 | offsetDateTime | `z.string().datetime()` に変換されます |
 | duration | `z.string().duration()` に変換されます |
 | url | `z.string().url()` に変換されます |
@@ -204,11 +204,11 @@ model NumericValues {
 | --- | --- |
 | `@minLength(42)` | `z.string().min(4)` に変換されます |
 | `@maxLength(42)` | `z.string().max(4)` に変換されます |
-| `@format("date")` | `z.string().date()` に変換されます |
-| `@format("time")` | `z.string().time()` に変換されます |
-| `@format("date-time")` | `z.string().datetime()` に変換されます |
-| `@format("duration")` | `z.string().duration()` に変換されます |
-| `@format("uri")` | `z.string().url()` に変換されます |
+| `@format("date")` | plainDate 型と同等, `z.string().date()` に変換されます |
+| `@format("time")` | plainTime 型と同等, `z.string().time()` に変換されます |
+| `@format("date-time")` | utcDateTime, offsetDateTime 型と同等, `z.string().datetime()` に変換されます |
+| `@format("duration")` | duration 型と同等, `z.string().duration()` に変換されます |
+| `@format("uri")` | url 型と同等, `z.string().url()` に変換されます |
 | `@format("email")` | `z.string().email()` に変換されます |
 | `@format("uuid")` | `z.string().uuid()` に変換されます |
 | `@format("cuid")` | `z.string().cuid()` に変換されます |
