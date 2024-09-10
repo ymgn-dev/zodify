@@ -343,7 +343,7 @@ model BooleanValues {
 #### その他補足
 
 Typespec のモデルのプロパティをオプショナルにする場合は、 `?` を付けてください。
-また、デフォルト値を設定する場合は、次のように `=` を使用してください。
+また、デフォルト値を設定する場合は、次のように `=` を使用してください(TypeSpec の仕様で配列のデフォルト値は `#[...]` と書く必要があります)。
 オプショナルとデフォルト値を併用することもできます。
 
 ```tsp
@@ -360,7 +360,7 @@ model Sample {
 export const sampleSchema = z.object({
   a: z.array(z.string()).optional(),
 
-  b: z.array(z.string()).default([]),
+  b: z.array(z.string()).default(['sample1', 'sample2']),
 
   c: z.array(z.string()).optional().default([]),
 })
