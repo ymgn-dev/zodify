@@ -64,9 +64,7 @@ export class StringPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `
-    ${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.string()${this.convertFormat()}${this.convertMinLength()}${this.convertMaxLength()}${!this.required ? '.optional()' : ''}${this.convertDefault()},
-    `
+    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
+    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.string()${this.convertFormat()}${this.convertMinLength()}${this.convertMaxLength()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
   }
 }

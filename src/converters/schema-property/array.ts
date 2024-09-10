@@ -118,9 +118,7 @@ export class ArrayPropertyConverter extends SchemaPropertyConverterBase {
     const itemRef = this.convertItemRef()
     const itemType = this.convertItemType()
 
-    return `
-    ${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.array(${itemRef === '' ? itemType : itemRef})${this.convertMinItems()}${this.convertMaxItems()}${!this.required ? '.optional()' : ''}${this.convertDefault()},
-    `
+    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
+    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.array(${itemRef === '' ? itemType : itemRef})${this.convertMinItems()}${this.convertMaxItems()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
   }
 }

@@ -39,14 +39,12 @@ export class NumberPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `
-    ${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
+    return `${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
     ${this.schemaPropertyName}: z.number()
     ${this.convertMinimum()}
     ${this.convertMaximum()}
     ${!this.required ? '.optional()' : ''}
-    ${this.convertDefault()},
-    `
+    ${this.convertDefault()},`
   }
 }
 
@@ -88,9 +86,7 @@ export class IntegerPropertyConverter extends SchemaPropertyConverterBase {
   }
 
   override convert() {
-    return `
-    ${this.schemaProperty.description ? `// ${this.schemaProperty.description}` : ''}
-    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.number()${this.convertMinimum()}${this.convertMaximum()}${!this.required ? '.optional()' : ''}${this.convertDefault()},
-    `
+    return `${this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}` : ''}
+    ${this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''}z.number()${this.convertMinimum()}${this.convertMaximum()}${!this.required ? '.optional()' : ''}${this.convertDefault()},`
   }
 }
