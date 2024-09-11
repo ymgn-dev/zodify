@@ -1,6 +1,9 @@
 # @doc("配列のテスト")
-# model ArrayTest {
-#   a: string[];
+# model Sample {
+#   a?: string[];
+#   b: string[] = #["sample1", "sample2"];
+#   c?: string[] = #[];
+#   d: int32[] = #[4, 8, 32];
 # }
 
 openapi: 3.0.0
@@ -11,13 +14,35 @@ tags: []
 paths: {}
 components:
   schemas:
-    ArrayTest:
+    Sample:
       type: object
       required:
-        - a
+        - b
+        - d
       properties:
         a:
           type: array
           items:
             type: string
+        b:
+          type: array
+          items:
+            type: string
+          default:
+            - sample1
+            - sample2
+        c:
+          type: array
+          items:
+            type: string
+          default: []
+        d:
+          type: array
+          items:
+            type: integer
+            format: int32
+          default:
+            - 4
+            - 8
+            - 32
       description: 配列のテスト
