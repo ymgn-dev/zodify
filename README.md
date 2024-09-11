@@ -95,17 +95,17 @@ enum  EnumSample {
 | 型 | 補足 |
 | --- | --- |
 | numeric | `z.number()` に変換されます |
-| integer | `z.number()` に変換されます |
+| integer | `z.number().int()` に変換されます |
 | float | `z.number()` に変換されます |
-| int64 | `z.number()` に変換されます |
-| int32 | `z.number()` に変換されます |
-| int16 | `z.number()` に変換されます |
-| int8 | `z.number()` に変換されます |
-| safeint | `z.number()` に変換されます |
-| uint64 | `z.number()` に変換されます |
-| uint32 | `z.number()` に変換されます |
-| uint16 | `z.number()` に変換されます |
-| uint8 | `z.number()` に変換されます |
+| int64 | `z.number().int()` に変換されます |
+| int32 | `z.number().int()` に変換されます |
+| int16 | `z.number().int()` に変換されます |
+| int8 | `z.number().int()` に変換されます |
+| safeint | `z.number().int()` に変換されます |
+| uint64 | `z.number().int()` に変換されます |
+| uint32 | `z.number().int()` に変換されます |
+| uint16 | `z.number().int()` に変換されます |
+| uint8 | `z.number().int()` に変換されます |
 | float64 | `z.number()` に変換されます |
 | float32 | `z.number()` に変換されます |
 | decimal | `z.number()` に変換されます |
@@ -113,10 +113,10 @@ enum  EnumSample {
 
 | デコレータ | 補足 |
 | --- | --- |
-| `@minValue(42)` | `z.number().gte(42)` に変換されます |
-| `@maxValue(42)` | `z.number().lte(42)` に変換されます |
-| `@minValueExclusive(8)` | `z.number().gt(8)` に変換されます |
-| `@maxValueExclusive(8)` | `z.number().lt(8)` に変換されます |
+| `@minValue(42)` | `.gte(42)` に変換されます |
+| `@maxValue(42)` | `.lte(42)` に変換されます |
+| `@minValueExclusive(8)` | `.gt(8)` に変換されます |
+| `@maxValueExclusive(8)` | `.lt(8)` に変換されます |
 
 #### その他補足
 
@@ -136,8 +136,8 @@ model Sample {
 
 ```ts
 export const sampleSchema = z.object({
-  a: z.number().optional(),
-  b: z.number().default(42),
+  a: z.number().int().optional(),
+  b: z.number().int().default(42),
   c: z.number().optional().default(3.14),
 })
 ```
@@ -202,17 +202,17 @@ model NumericValues {
 
 | デコレータ | 補足 |
 | --- | --- |
-| `@minLength(42)` | `z.string().min(4)` に変換されます |
-| `@maxLength(42)` | `z.string().max(4)` に変換されます |
-| `@format("date")` | plainDate 型と同等, `z.string().date()` に変換されます |
-| `@format("time")` | plainTime 型と同等, `z.string().time()` に変換されます |
-| `@format("date-time")` | utcDateTime, offsetDateTime 型と同等, `z.string().datetime()` に変換されます |
-| `@format("duration")` | duration 型と同等, `z.string().duration()` に変換されます |
-| `@format("uri")` | url 型と同等, `z.string().url()` に変換されます |
-| `@format("email")` | `z.string().email()` に変換されます |
-| `@format("uuid")` | `z.string().uuid()` に変換されます |
-| `@format("cuid")` | `z.string().cuid()` に変換されます |
-| `@format("ip")` | `z.string().ip()` に変換されます |
+| `@minLength(42)` | `.min(4)` に変換されます |
+| `@maxLength(42)` | `.max(4)` に変換されます |
+| `@format("date")` | plainDate 型と同等, `.date()` に変換されます |
+| `@format("time")` | plainTime 型と同等, `.time()` に変換されます |
+| `@format("date-time")` | utcDateTime, offsetDateTime 型と同等, `.datetime()` に変換されます |
+| `@format("duration")` | duration 型と同等, `.duration()` に変換されます |
+| `@format("uri")` | url 型と同等, `.url()` に変換されます |
+| `@format("email")` | `.email()` に変換されます |
+| `@format("uuid")` | `.uuid()` に変換されます |
+| `@format("cuid")` | `.cuid()` に変換されます |
+| `@format("ip")` | `.ip()` に変換されます |
 
 #### その他補足
 
@@ -325,8 +325,8 @@ model BooleanValues {
 
 | デコレータ | 補足 |
 | --- | --- |
-| `@minItems(42)` | `z.array(...).min(4)` に変換されます |
-| `@maxItems(42)` | `z.array(...).max(4)` に変換されます |
+| `@minItems(42)` | `.min(4)` に変換されます |
+| `@maxItems(42)` | `.max(4)` に変換されます |
 
 #### その他補足
 
