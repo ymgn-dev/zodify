@@ -149,8 +149,8 @@ export const sampleSchema = z.object({
 ```tsp
 @doc("数値")
 model NumericValues {
-  @minValue(42)
-  @maxValue(95)
+  @minValue(42.6)
+  @maxValue(95.8)
   a: numeric;
 
   @minValueExclusive(8)
@@ -244,27 +244,6 @@ export const sampleSchema = z.object({
 
 ```tsp
 @doc("文字列")
-model StringValues {
-  @minLength(42)
-  @maxLength(96)
-  a: string;
-
-  @format("date-time")
-  b: string;
-
-  @format("uri")
-  c: string;
-
-  @format("email")
-  d: string;
-
-  @format("uuid")
-  e: string;
-
-  f: duration;
-  g: url;
-}
-
 model StringValues {
   @minLength(42)
   @maxLength(96)
