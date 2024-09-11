@@ -1,9 +1,15 @@
+# model OtherModel {
+#   @format("uuid")
+#   id: string;
+# }
+
 # @doc("配列のテスト")
 # model Sample {
 #   a?: string[];
 #   b: string[] = #["sample1", "sample2"];
 #   c?: string[] = #[];
 #   d: int32[] = #[4, 8, 32];
+#   e: OtherModel[] = #[];
 # }
 
 openapi: 3.0.0
@@ -14,11 +20,20 @@ tags: []
 paths: {}
 components:
   schemas:
+    OtherModel:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
     Sample:
       type: object
       required:
         - b
         - d
+        - e
       properties:
         a:
           type: array
@@ -45,4 +60,9 @@ components:
             - 4
             - 8
             - 32
+        e:
+          type: array
+          items:
+            $ref: '#/components/schemas/OtherModel'
+          default: []
       description: 配列のテスト

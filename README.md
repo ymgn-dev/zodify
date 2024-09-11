@@ -334,22 +334,35 @@ Typespec のモデルのプロパティをオプショナルにする場合は�
 オプショナルとデフォルト値を併用することもできます。
 
 ```tsp
+model OtherModel {
+  @format("uuid")
+  id: string;
+}
+
+@doc("配列のテスト")
 model Sample {
   a?: string[];
   b: string[] = #["sample1", "sample2"];
   c?: string[] = #[];
   d: int32[] = #[4, 8, 32];
+  e: OtherModel[] = #[];
 }
 ```
 
 上記のモデルは次のように変換されます。
 
 ```ts
+export const otherModelSchema = z.object({
+  id: z.string().uuid(),
+})
+
+// 配列のテスト
 export const sampleSchema = z.object({
   a: z.array(z.string()).optional(),
   b: z.array(z.string()).default(['sample1', 'sample2']),
   c: z.array(z.string()).optional().default([]),
   d: z.array(z.number().int()).default([4, 8, 32]),
+  e: z.array(otherModelSchema).default([]),
 })
 ```
 
