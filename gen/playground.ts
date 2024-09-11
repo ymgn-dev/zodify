@@ -26,7 +26,7 @@ export const categoryUpdateSchema = z.object({
 
 // カウントモデル
 export const countSchema = z.object({
-  count: z.number(),
+  count: z.number().int(),
 });
 
 // 投稿コメントモデル
