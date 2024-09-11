@@ -94,9 +94,7 @@ enum  EnumSample {
 
 | 型 | 補足 |
 | --- | --- |
-| numeric | `z.number()` に変換されます |
 | integer | `z.number().int()` に変換されます |
-| float | `z.number()` に変換されます |
 | int64 | `z.number().int()` に変換されます |
 | int32 | `z.number().int()` に変換されます |
 | int16 | `z.number().int()` に変換されます |
@@ -106,6 +104,8 @@ enum  EnumSample {
 | uint32 | `z.number().int()` に変換されます |
 | uint16 | `z.number().int()` に変換されます |
 | uint8 | `z.number().int()` に変換されます |
+| numeric | `z.number()` に変換されます |
+| float | `z.number()` に変換されます |
 | float64 | `z.number()` に変換されます |
 | float32 | `z.number()` に変換されます |
 | decimal | `z.number()` に変換されます |
@@ -250,18 +250,38 @@ model StringValues {
   a: string;
 
   @format("date-time")
-  b: plainDate;
+  b: string;
 
   @format("uri")
-  c: plainTime;
+  c: string;
 
   @format("email")
-  d: utcDateTime;
+  d: string;
 
   @format("uuid")
+  e: string;
+
+  f: duration;
+  g: url;
+}
+
+model StringValues {
+  @minLength(42)
+  @maxLength(96)
+  a: string;
+
+  b: plainDate;
+  c: plainTime;
+  d: utcDateTime;
   e: offsetDateTime;
   f: duration;
   g: url;
+
+  @format("email")
+  h: string;
+
+  @format("uuid")
+  i: string;
 }
 ```
 
