@@ -93,6 +93,6 @@ export class IntegerPropertyConverter extends SchemaPropertyConverterBase {
     const min = this.convertMinimum().trim()
     const max = this.convertMaximum().trim()
     const defaultValue = this.convertDefault().trim()
-    return `${comment}${propertyName}z.number()${min}${max}${required}${defaultValue},`
+    return `${comment}${propertyName}z.number().int()${min}${max}${required}${defaultValue},`
   }
 }
