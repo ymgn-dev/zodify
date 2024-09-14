@@ -85,8 +85,8 @@ export class ArraySchemaConverter extends SchemaConverterBase {
   override convert() {
     const comment = this.schema.description ? `// ${this.schema.description}\n` : ''
     const name = this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''
-    const itemRef = this.convertItemRef()?.trim()
-    const itemType = this.convertItemType().trim()
+    const itemRef = this.convertItemRef()?.trim() ?? ''
+    const itemType = this.convertItemType().trim() ?? ''
     const min = this.convertMinItems().trim()
     const max = this.convertMaxItems().trim()
     return `${comment}${name}z.array(${itemRef !== '' ? itemRef : itemType})${min}${max}`
