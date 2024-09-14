@@ -2,6 +2,7 @@ import type z from 'zod'
 import type {
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
+  extendDocSchemaPropertyValidator,
   integerSchemaPropertyFormatValidator,
   integerSchemaPropertyValidator,
   numberSchemaPropertyFormatValidator,
@@ -13,6 +14,7 @@ import type {
 
 export type ArraySchemaProperty = z.infer<typeof arraySchemaPropertyValidator>
 export type BooleanSchemaProperty = z.infer<typeof booleanSchemaPropertyValidator>
+export type ExtendDocSchemaProperty = z.infer<typeof extendDocSchemaPropertyValidator>
 export type NumberSchemaProperty = z.infer<typeof numberSchemaPropertyValidator>
 export type IntegerSchemaProperty = z.infer<typeof integerSchemaPropertyValidator>
 export type StringSchemaProperty = z.infer<typeof stringSchemaPropertyValidator>

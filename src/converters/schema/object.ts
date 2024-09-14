@@ -1,8 +1,10 @@
 import { SchemaConverterBase } from '.'
 import { pascalToCamel } from '../../utils'
+import { extendDocSchemaPropertyValidator } from '../../validators/schema-property'
 import {
   ArrayPropertyConverter,
   BooleanPropertyConverter,
+  ExtendDocPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
   RefPropertyConverter,
@@ -25,6 +27,18 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
 
     for (const propertyName of schemaPropertyNames) {
       const property = this.schema.properties[propertyName]
+      if (extendDocSchemaPropertyValidator.safeParse(property).success) {
+        const parsed = extendDocSchemaPropertyValidator.parse(property)
+        propertyConverters.push(
+          new ExtendDocPropertyConverter(
+            this.name,
+            propertyName,
+            parsed,
+            this.schema.required?.includes(propertyName) ?? false,
+          ),
+        )
+        continue
+      }
       switch (property.type) {
         case 'string':
           propertyConverters.push(
