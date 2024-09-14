@@ -7,7 +7,7 @@ OpenAPI の yaml から、Zod の型定義を生成するツールです。
 ## セットアップ
 
 ```sh
-git clone git@github.com:DomHacler/zodify.git
+git clone git@github.com:Dom-Hacker-Inc/zodify.git
 cd zodify
 npm run build
 ```
@@ -54,6 +54,24 @@ export const sampleModelSchema = z.object({
 
   // 更新日
   updatedAt: z.string().datetime(),
+})
+```
+
+さらに、以下に書くデコレータでは表現できない Zod スキーマを生成したい場合は、 `@doc()` デコレータの拡張記法を使用することができます。
+`zod: ` より左側に通常のコメントを記述(任意)し、右側に Zod のスキーマを記述します。
+なお、この拡張記法を使用した場合は、以下の型ごとのデコレータは無視されます。
+
+```tsp
+model SampleModel {
+  @doc("メールアドレス, 未設定は空文字 zod: z.union([z.string().email(), z.literal(\"\")]).default(\"\")")
+  email: string;
+}
+```
+
+```ts
+export const sampleModelSchema = z.object({
+  // メールアドレス, 未設定は空文字
+  email: z.union([z.string().email(), z.literal('')]).default(''),
 })
 ```
 
