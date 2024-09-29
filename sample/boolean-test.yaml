@@ -1,0 +1,21 @@
+# @doc("Boolean test")
+# model BooleanTest {
+#   a: boolean;
+# }
+
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    BooleanTest:
+      type: object
+      required:
+        - a
+      properties:
+        a:
+          type: boolean
+      description: Boolean test

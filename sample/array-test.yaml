@@ -1,0 +1,68 @@
+# model OtherModel {
+#   @format("uuid")
+#   id: string;
+# }
+
+# @doc("Array test")
+# model Sample {
+#   a?: string[];
+#   b: string[] = #["sample1", "sample2"];
+#   c?: string[] = #[];
+#   d: int32[] = #[4, 8, 32];
+#   e: OtherModel[] = #[];
+# }
+
+openapi: 3.0.0
+info:
+  title: (title)
+  version: 0.0.0
+tags: []
+paths: {}
+components:
+  schemas:
+    OtherModel:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+    Sample:
+      type: object
+      required:
+        - b
+        - d
+        - e
+      properties:
+        a:
+          type: array
+          items:
+            type: string
+        b:
+          type: array
+          items:
+            type: string
+          default:
+            - sample1
+            - sample2
+        c:
+          type: array
+          items:
+            type: string
+          default: []
+        d:
+          type: array
+          items:
+            type: integer
+            format: int32
+          default:
+            - 4
+            - 8
+            - 32
+        e:
+          type: array
+          items:
+            $ref: '#/components/schemas/OtherModel'
+          default: []
+      description: Array test
