@@ -74,36 +74,37 @@ export class YamlParamManager {
       for (const param of value.params) {
         const name = param.name
         const schema = param.schema
+        const required = param.required
 
         if (arraySchemaPropertyValidator.safeParse(schema).success) {
           const arraySchema = arraySchemaPropertyValidator.parse(schema)
-          const output = new ArrayPropertyConverter(key, name, arraySchema, true).convert()
+          const output = new ArrayPropertyConverter(key, name, arraySchema, required).convert()
           paramOutputs.push(output)
         }
         else if (booleanSchemaPropertyValidator.safeParse(schema).success) {
           const booleanSchema = booleanSchemaPropertyValidator.parse(schema)
-          const output = new BooleanPropertyConverter(key, name, booleanSchema, true).convert()
+          const output = new BooleanPropertyConverter(key, name, booleanSchema, required).convert()
           paramOutputs.push(output)
         }
         else if (numberSchemaPropertyValidator.safeParse(schema).success) {
           const numberSchema = numberSchemaPropertyValidator.parse(schema)
-          const output = new NumberPropertyConverter(key, name, numberSchema, true).convert()
+          const output = new NumberPropertyConverter(key, name, numberSchema, required).convert()
           paramOutputs.push(output)
         }
         else if (integerSchemaPropertyValidator.safeParse(schema).success) {
           const integerSchema = integerSchemaPropertyValidator.parse(schema)
-          const output = new IntegerPropertyConverter(key, name, integerSchema, true).convert()
+          const output = new IntegerPropertyConverter(key, name, integerSchema, required).convert()
           paramOutputs.push(output)
         }
         else if (refSchemaPropertyValidator.safeParse(schema).success) {
           const refSchema = refSchemaPropertyValidator.parse(schema)
-          const output = new RefPropertyConverter(key, name, refSchema, true).convert()
-          this.importSchemas.push(output.split(':')[1].replace(',', '').trim())
+          const output = new RefPropertyConverter(key, name, refSchema, required).convert()
+          this.importSchemas.push(output.split('.')[0].split(':')[1].replace(',', '').trim())
           paramOutputs.push(output)
         }
         else if (stringSchemaPropertyValidator.safeParse(schema).success) {
           const stringSchema = stringSchemaPropertyValidator.parse(schema)
-          const output = new StringPropertyConverter(key, name, stringSchema, true).convert()
+          const output = new StringPropertyConverter(key, name, stringSchema, required).convert()
           paramOutputs.push(output)
         }
       }

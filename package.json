@@ -1,7 +1,7 @@
 {
   "name": "@ymgn-dev/zodify",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "TypeSpec to Zod schema generator",
   "author": "ymgn-dev",
   "license": "MIT",
