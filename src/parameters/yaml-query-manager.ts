@@ -20,7 +20,7 @@ import {
 } from '../components/validators/schema-property'
 import { getRelativePath, pascalToCamel } from '../utils'
 
-export class YamlParamManager {
+export class YamlQueryManager {
   constructor(
     private readonly inputFilePath: string,
     private readonly writeFilePath: string,
@@ -51,12 +51,12 @@ export class YamlParamManager {
       for (const method of methods) {
         const summary = yamlFile.paths[path][method].summary
         const description = yamlFile.paths[path][method].description
-        const params = yamlFile.paths[path][method].parameters as any[]
+        const params = (yamlFile.paths[path][method].parameters as any[]).filter(p => p.in === 'query')
         const operationId = yamlFile.paths[path][method].operationId as string
         if (params.length > 0) {
           const split = operationId.split('_')
           const key = pascalToCamel(split[0]) + split[1].charAt(0).toUpperCase() + split[1].slice(1)
-          YamlParamManager.params.set(key, {
+          YamlQueryManager.params.set(key, {
             summary,
             description,
             method,
@@ -69,7 +69,7 @@ export class YamlParamManager {
   }
 
   public convert() {
-    for (const [key, value] of YamlParamManager.params) {
+    for (const [key, value] of YamlQueryManager.params) {
       const paramOutputs: string[] = []
       for (const param of value.params) {
         const name = param.name
@@ -109,7 +109,7 @@ export class YamlParamManager {
         }
       }
 
-      this.outputs.push(`export const ${key}ParamSchema = z.object({\n${paramOutputs.join('\n')}\n})`)
+      this.outputs.push(`export const ${key}QuerySchema = z.object({\n${paramOutputs.join('\n')}\n})`)
     }
   }
 
@@ -145,7 +145,7 @@ export class YamlParamManager {
         console.error(`Prettier stderr: ${stderr}`)
       }
       // eslint-disable-next-line no-console
-      console.log('Successfully generated zod param schemas')
+      console.log('Successfully generated zod query schemas')
     })
   }
 }
