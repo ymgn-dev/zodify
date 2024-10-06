@@ -1,5 +1,5 @@
 import { SchemaPropertyConverterBase } from '.'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../../utils'
 import type { BooleanSchemaProperty } from '../../types'
 
 export class BooleanPropertyConverter extends SchemaPropertyConverterBase {

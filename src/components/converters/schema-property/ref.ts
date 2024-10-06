@@ -1,5 +1,6 @@
 import { SchemaPropertyConverterBase } from '.'
-import { pascalToCamel, YamlSchemaManager } from '../../utils'
+import { pascalToCamel } from '../../../utils'
+import { YamlSchemaManager } from '../../yaml-schema-manager'
 import type { RefSchemaProperty } from '../../types'
 
 export class RefPropertyConverter extends SchemaPropertyConverterBase {

@@ -1,5 +1,5 @@
 import { SchemaPropertyConverterBase } from '.'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../../utils'
 import type { IntegerSchemaProperty, NumberSchemaProperty } from '../../types'
 
 export class NumberPropertyConverter extends SchemaPropertyConverterBase {

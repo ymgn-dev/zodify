@@ -1,10 +1,11 @@
 import { SchemaConverterBase } from '.'
-import { pascalToCamel, YamlSchemaManager } from '../../utils'
+import { pascalToCamel } from '../../../utils'
 import {
   integerSchemaPropertyFormatValidator,
   numberSchemaPropertyFormatValidator,
   stringSchemaPropertyFormatValidator,
 } from '../../validators/schema-property'
+import { YamlSchemaManager } from '../../yaml-schema-manager'
 import {
   BooleanPropertyConverter,
   IntegerPropertyConverter,

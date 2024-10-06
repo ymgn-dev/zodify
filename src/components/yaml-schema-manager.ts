@@ -3,32 +3,32 @@ import { assert } from 'node:console'
 import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
+import { topologicalSort } from '../utils'
 import {
   ArraySchemaConverter,
   EnumNumberSchemaConverter,
   EnumStringSchemaConverter,
   ObjectSchemaConverter,
-} from '../converters/schema'
+} from './converters/schema'
 import {
   BooleanPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
   StringPropertyConverter,
-} from '../converters/schema-property'
+} from './converters/schema-property'
 import {
   arraySchemaValidator,
   enumNumberSchemaValidator,
   enumStringSchemaValidator,
   objectSchemaValidator,
-} from '../validators/schema'
+} from './validators/schema'
 import {
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
   numberSchemaPropertyValidator,
   stringSchemaPropertyValidator,
-} from '../validators/schema-property'
-import { topologicalSort } from './topological-sort'
-import type { AnySchema } from '../types'
+} from './validators/schema-property'
+import type { AnySchema } from './types'
 
 export class YamlSchemaManager {
   constructor(

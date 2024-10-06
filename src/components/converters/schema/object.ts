@@ -1,5 +1,5 @@
 import { SchemaConverterBase } from '.'
-import { pascalToCamel } from '../../utils'
+import { pascalToCamel } from '../../../utils'
 import { extendDocSchemaPropertyValidator } from '../../validators/schema-property'
 import {
   ArrayPropertyConverter,
