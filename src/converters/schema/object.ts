@@ -1,4 +1,5 @@
 import { SchemaConverterBase } from '.'
+import { YamlSchemaManager } from '../../managers/yaml-schema-manager'
 import { pascalToCamel } from '../../utils'
 import { extendDocSchemaPropertyValidator } from '../../validators/schema-property'
 import {
@@ -21,6 +22,16 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
     protected readonly schema: ObjectSchema,
   ) {
     super(name, schema)
+  }
+
+  convertAllOf() {
+    const schemas: string[] = []
+    for (const allOf of this.schema.allOf ?? []) {
+      const depSchemaName = allOf.$ref.split('/').pop() ?? ''
+      YamlSchemaManager.addSchemaDependencies(this.name, depSchemaName)
+      schemas.push(`${pascalToCamel(depSchemaName)}Schema`)
+    }
+    return schemas
   }
 
   override convert() {
@@ -126,8 +137,10 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
     }
     const comment = this.schema.description ? `// ${this.schema.description}\n` : ''
     const name = this.name ? `export const ${pascalToCamel(this.name)}Schema = ` : ''
+    const allOf = this.convertAllOf()
+    const allOfSchema = allOf.length > 1 ? `.${allOf.join('.merge(')})` : `${allOf.length > 0 ? `.merge(${allOf[0]})` : ''}`
     return `${comment}${name}z.object({
       ${propertyConverters.map(converter => converter.convert()).join('\n')}
-    })`
+    })${allOfSchema}`
   }
 }
