@@ -2,7 +2,7 @@
 export * from './base'
 
 // Child Classes
-export * from './any-of'
+export * from './one-or-any-of'
 export * from './array'
 export * from './boolean'
 export * from './extend-doc'

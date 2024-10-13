@@ -17,7 +17,7 @@ import type {
   StringSchemaPropertyFormat,
 } from '../../types'
 
-export class AnyOfPropertyConverter extends SchemaPropertyConverterBase {
+export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
   constructor(
     protected readonly schemaName: string,
     protected readonly schemaPropertyName: string,

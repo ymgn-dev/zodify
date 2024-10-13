@@ -3,21 +3,21 @@ import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
 import {
-  AnyOfPropertyConverter,
   ArrayPropertyConverter,
   BooleanPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
+  OneOrAnyOfPropertyConverter,
   RefPropertyConverter,
   StringPropertyConverter,
 } from '../converters/schema-property'
 import { getRelativePath, pascalToCamel } from '../utils'
 import {
-  anyOfSchemaPropertyValidator,
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
   numberSchemaPropertyValidator,
+  oneOfAnyOfSchemaPropertyValidator,
   refSchemaPropertyValidator,
   stringSchemaPropertyValidator,
 } from '../validators/schema-property'
@@ -78,9 +78,9 @@ export class YamlPathManager {
         const schema = param.schema
         const required = param.required
 
-        if (anyOfSchemaPropertyValidator.safeParse(schema).success) {
-          const anyOfSchema = anyOfSchemaPropertyValidator.parse(schema)
-          const output = new AnyOfPropertyConverter(key, name, anyOfSchema, required).convert()
+        if (oneOfAnyOfSchemaPropertyValidator.safeParse(schema).success) {
+          const anyOfSchema = oneOfAnyOfSchemaPropertyValidator.parse(schema)
+          const output = new OneOrAnyOfPropertyConverter(key, name, anyOfSchema, required).convert()
           paramOutputs.push(output)
         }
         if (arraySchemaPropertyValidator.safeParse(schema).success) {

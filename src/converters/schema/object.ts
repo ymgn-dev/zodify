@@ -2,12 +2,12 @@ import { SchemaConverterBase } from '.'
 import { pascalToCamel } from '../../utils'
 import { extendDocSchemaPropertyValidator } from '../../validators/schema-property'
 import {
-  AnyOfPropertyConverter,
   ArrayPropertyConverter,
   BooleanPropertyConverter,
   ExtendDocPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
+  OneOrAnyOfPropertyConverter,
   RefPropertyConverter,
   StringPropertyConverter,
 } from '../schema-property'
@@ -102,8 +102,9 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
           )
           break
         case 'anyOf':
+        case 'oneOf':
           propertyConverters.push(
-            new AnyOfPropertyConverter(
+            new OneOrAnyOfPropertyConverter(
               this.name,
               propertyName,
               property,
