@@ -13,11 +13,11 @@ import {
 } from '../converters/schema-property'
 import { getRelativePath, pascalToCamel } from '../utils'
 import {
-  oneOfAnyOfSchemaPropertyValidator,
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
   numberSchemaPropertyValidator,
+  oneOfAnyOfSchemaPropertyValidator,
   refSchemaPropertyValidator,
   stringSchemaPropertyValidator,
 } from '../validators/schema-property'

@@ -9,10 +9,10 @@ import {
 import { YamlSchemaManager } from '../../managers/yaml-schema-manager'
 import { pascalToCamel } from '../../utils'
 import type {
-  AnyOfSchemaProperty,
   AnySchemaPropertyFormat,
   IntegerSchemaPropertyFormat,
   NumberSchemaPropertyFormat,
+  OneOrAnyOfSchemaProperty,
   SchemaDataType,
   StringSchemaPropertyFormat,
 } from '../../types'
@@ -21,7 +21,7 @@ export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
   constructor(
     protected readonly schemaName: string,
     protected readonly schemaPropertyName: string,
-    protected readonly schemaProperty: AnyOfSchemaProperty,
+    protected readonly schemaProperty: OneOrAnyOfSchemaProperty,
     protected readonly required: boolean,
   ) {
     super(schemaName, schemaPropertyName, schemaProperty)
@@ -75,7 +75,8 @@ export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
 
   convertItems() {
     const converted: string[] = []
-    for (const i of this.schemaProperty.anyOf) {
+    const items = this.schemaProperty.anyOf ?? this.schemaProperty.oneOf ?? []
+    for (const i of items) {
       if (i.$ref) {
         const depSchemaName = i.$ref.split('/').pop() ?? ''
         YamlSchemaManager.addSchemaDependencies(this.schemaName, depSchemaName)

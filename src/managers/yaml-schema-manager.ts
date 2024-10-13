@@ -8,6 +8,7 @@ import {
   EnumNumberSchemaConverter,
   EnumStringSchemaConverter,
   ObjectSchemaConverter,
+  OneOrAnyOfSchemaConverter,
 } from '../converters/schema'
 import {
   BooleanPropertyConverter,
@@ -21,6 +22,7 @@ import {
   enumNumberSchemaValidator,
   enumStringSchemaValidator,
   objectSchemaValidator,
+  oneOrAnyOfSchemaValidator,
 } from '../validators/schema'
 import {
   booleanSchemaPropertyValidator,
@@ -86,6 +88,11 @@ export class YamlSchemaManager {
       else if (objectSchemaValidator.safeParse(value).success) {
         const objectSchema = objectSchemaValidator.parse(value)
         const output = new ObjectSchemaConverter(key, objectSchema).convert()
+        this.outputs[key] = output
+      }
+      else if (oneOrAnyOfSchemaValidator.safeParse(value).success) {
+        const oneOrAnyOfSchema = oneOrAnyOfSchemaValidator.parse(value)
+        const output = new OneOrAnyOfSchemaConverter(key, oneOrAnyOfSchema).convert()
         this.outputs[key] = output
       }
       // Scalars(Schema Property と構造が一致するため Coverter を借りている)
