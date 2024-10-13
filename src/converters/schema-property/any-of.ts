@@ -1,0 +1,114 @@
+import { assert } from 'node:console'
+import {
+  BooleanPropertyConverter,
+  IntegerPropertyConverter,
+  NumberPropertyConverter,
+  SchemaPropertyConverterBase,
+  StringPropertyConverter,
+} from '.'
+import { YamlSchemaManager } from '../../managers/yaml-schema-manager'
+import { pascalToCamel } from '../../utils'
+import type {
+  AnyOfSchemaProperty,
+  AnySchemaPropertyFormat,
+  IntegerSchemaPropertyFormat,
+  NumberSchemaPropertyFormat,
+  SchemaDataType,
+  StringSchemaPropertyFormat,
+} from '../../types'
+
+export class AnyOfPropertyConverter extends SchemaPropertyConverterBase {
+  constructor(
+    protected readonly schemaName: string,
+    protected readonly schemaPropertyName: string,
+    protected readonly schemaProperty: AnyOfSchemaProperty,
+    protected readonly required: boolean,
+  ) {
+    super(schemaName, schemaPropertyName, schemaProperty)
+  }
+
+  convertItem(
+    type: SchemaDataType,
+    format?: AnySchemaPropertyFormat,
+  ) {
+    switch (type) {
+      case 'string': {
+        return new StringPropertyConverter(
+          this.schemaName,
+          '',
+          {
+            type,
+            format: format as StringSchemaPropertyFormat,
+          },
+          true,
+        ).convert()
+      }
+      case 'number': {
+        return new NumberPropertyConverter(
+          this.schemaName,
+          '',
+          {
+            type,
+            format: format as NumberSchemaPropertyFormat,
+          },
+          true,
+        ).convert()
+      }
+      case 'integer': {
+        return new IntegerPropertyConverter(
+          this.schemaName,
+          '',
+          {
+            type,
+            format: format as IntegerSchemaPropertyFormat,
+          },
+          true,
+        ).convert()
+      }
+      case 'boolean': {
+        return new BooleanPropertyConverter(this.schemaName, '', { type }, true).convert()
+      }
+      default:
+        return ''
+    }
+  }
+
+  convertItems() {
+    const converted: string[] = []
+    for (const i of this.schemaProperty.anyOf) {
+      if (i.$ref) {
+        const depSchemaName = i.$ref.split('/').pop() ?? ''
+        YamlSchemaManager.addSchemaDependencies(this.schemaName, depSchemaName)
+        converted.push(`${pascalToCamel(depSchemaName)}Schema`)
+      }
+      else if (i.type) {
+        const format = i.format as AnySchemaPropertyFormat
+        converted.push(this.convertItem(i.type, format))
+      }
+      else {
+        assert(false, `Invalid anyOf item: ${JSON.stringify(i)}`)
+      }
+    }
+    return converted.join('')
+  }
+
+  convertDefault() {
+    const dVal = this.schemaProperty.default
+    if (dVal === undefined) {
+      return ''
+    }
+    if (dVal.every(i => typeof i === 'string')) {
+      return `.default([${dVal.map(i => `'${i}'`).join(', ')}])`
+    }
+    return `.default([${this.schemaProperty.default}])`
+  }
+
+  override convert() {
+    const comment = this.schemaProperty.description ? `\n\n// ${this.schemaProperty.description}\n` : ''
+    const propertyName = this.schemaPropertyName ? `${this.schemaPropertyName}: ` : ''
+    const items = this.convertItems()
+    const required = !this.required ? '.optional()' : ''
+    const defaultValue = this.convertDefault().trim()
+    return `${comment}${propertyName}z.union([${items}])${required}${defaultValue},`
+  }
+}
