@@ -11,6 +11,7 @@ import {
   RefPropertyConverter,
   StringPropertyConverter,
 } from '../schema-property'
+import { AllOfPropertyConverter } from '../schema-property/all-of'
 import type { ObjectSchema } from '../../types'
 import type { SchemaPropertyConverterBase } from '../schema-property'
 
@@ -105,6 +106,16 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
         case 'oneOf':
           propertyConverters.push(
             new OneOrAnyOfPropertyConverter(
+              this.name,
+              propertyName,
+              property,
+              this.schema.required?.includes(propertyName) ?? false,
+            ),
+          )
+          break
+        case 'allOf':
+          propertyConverters.push(
+            new AllOfPropertyConverter(
               this.name,
               propertyName,
               property,

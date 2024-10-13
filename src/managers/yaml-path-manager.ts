@@ -3,6 +3,7 @@ import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
 import {
+  AllOfPropertyConverter,
   ArrayPropertyConverter,
   BooleanPropertyConverter,
   IntegerPropertyConverter,
@@ -13,6 +14,7 @@ import {
 } from '../converters/schema-property'
 import { getRelativePath, pascalToCamel } from '../utils'
 import {
+  allOfSchemaPropertyValidator,
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
@@ -78,6 +80,14 @@ export class YamlPathManager {
         const schema = param.schema
         const required = param.required
 
+        if (allOfSchemaPropertyValidator.safeParse(schema).success) {
+          const allOfSchema = allOfSchemaPropertyValidator.parse(schema)
+          const output = new AllOfPropertyConverter(key, name, allOfSchema, required).convert()
+          this.importSchemas.push(...allOfSchema.allOf.map(
+            s => pascalToCamel(s.$ref.split('/').pop() ?? '' + 'Schema'),
+          ))
+          paramOutputs.push(output)
+        }
         if (oneOfAnyOfSchemaPropertyValidator.safeParse(schema).success) {
           const anyOfSchema = oneOfAnyOfSchemaPropertyValidator.parse(schema)
           const output = new OneOrAnyOfPropertyConverter(key, name, anyOfSchema, required).convert()
