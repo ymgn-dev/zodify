@@ -5,8 +5,8 @@ import {
   SchemaPropertyConverterBase,
   StringPropertyConverter,
 } from '.'
-import { pascalToCamel } from '../../../utils'
-import { YamlSchemaManager } from '../../yaml-schema-manager'
+import { YamlSchemaManager } from '../../managers/yaml-schema-manager'
+import { pascalToCamel } from '../../utils'
 import type {
   AnySchemaPropertyFormat,
   ArraySchemaProperty,

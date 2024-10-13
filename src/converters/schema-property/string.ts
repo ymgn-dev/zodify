@@ -1,6 +1,6 @@
 import { assert } from 'node:console'
 import { SchemaPropertyConverterBase } from '.'
-import { pascalToCamel } from '../../../utils'
+import { pascalToCamel } from '../../utils'
 import type { StringSchemaProperty } from '../../types'
 
 export class StringPropertyConverter extends SchemaPropertyConverterBase {

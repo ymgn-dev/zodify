@@ -1,5 +1,5 @@
 import { SchemaConverterBase } from '.'
-import { pascalToCamel } from '../../../utils'
+import { pascalToCamel } from '../../utils'
 import type { EnumNumberSchema, EnumStringSchema } from '../../types'
 
 export class EnumStringSchemaConverter extends SchemaConverterBase {

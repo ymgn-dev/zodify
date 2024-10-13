@@ -3,24 +3,26 @@ import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
 import {
+  AnyOfPropertyConverter,
   ArrayPropertyConverter,
   BooleanPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
   RefPropertyConverter,
   StringPropertyConverter,
-} from '../components/converters/schema-property'
+} from '../converters/schema-property'
+import { getRelativePath, pascalToCamel } from '../utils'
 import {
+  anyOfSchemaPropertyValidator,
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
   numberSchemaPropertyValidator,
   refSchemaPropertyValidator,
   stringSchemaPropertyValidator,
-} from '../components/validators/schema-property'
-import { getRelativePath, pascalToCamel } from '../utils'
+} from '../validators/schema-property'
 
-export class YamlQueryManager {
+export class YamlPathManager {
   constructor(
     private readonly inputFilePath: string,
     private readonly writeFilePath: string,
@@ -51,12 +53,12 @@ export class YamlQueryManager {
       for (const method of methods) {
         const summary = yamlFile.paths[path][method].summary
         const description = yamlFile.paths[path][method].description
-        const params = (yamlFile.paths[path][method].parameters as any[]).filter(p => p.in === 'query')
+        const params = (yamlFile.paths[path][method].parameters as any[]).filter(p => p.in === 'path')
         const operationId = yamlFile.paths[path][method].operationId as string
         if (params.length > 0) {
           const split = operationId.split('_')
           const key = pascalToCamel(split[0]) + split[1].charAt(0).toUpperCase() + split[1].slice(1)
-          YamlQueryManager.params.set(key, {
+          YamlPathManager.params.set(key, {
             summary,
             description,
             method,
@@ -69,13 +71,18 @@ export class YamlQueryManager {
   }
 
   public convert() {
-    for (const [key, value] of YamlQueryManager.params) {
+    for (const [key, value] of YamlPathManager.params) {
       const paramOutputs: string[] = []
       for (const param of value.params) {
         const name = param.name
         const schema = param.schema
         const required = param.required
 
+        if (anyOfSchemaPropertyValidator.safeParse(schema).success) {
+          const anyOfSchema = anyOfSchemaPropertyValidator.parse(schema)
+          const output = new AnyOfPropertyConverter(key, name, anyOfSchema, required).convert()
+          paramOutputs.push(output)
+        }
         if (arraySchemaPropertyValidator.safeParse(schema).success) {
           const arraySchema = arraySchemaPropertyValidator.parse(schema)
           const output = new ArrayPropertyConverter(key, name, arraySchema, required).convert()
@@ -109,7 +116,7 @@ export class YamlQueryManager {
         }
       }
 
-      this.outputs.push(`export const ${key}QuerySchema = z.object({\n${paramOutputs.join('\n')}\n})`)
+      this.outputs.push(`export const ${key}PathSchema = z.object({\n${paramOutputs.join('\n')}\n})`)
     }
   }
 
@@ -145,7 +152,7 @@ export class YamlQueryManager {
         console.error(`Prettier stderr: ${stderr}`)
       }
       // eslint-disable-next-line no-console
-      console.log('Successfully generated zod query schemas')
+      console.log('Successfully generated zod path schemas')
     })
   }
 }

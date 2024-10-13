@@ -1,5 +1,6 @@
 import z from 'zod'
 import {
+  anyOfSchemaPropertyValidator,
   arraySchemaPropertyValidator,
   booleanSchemaPropertyValidator,
   integerSchemaPropertyValidator,
@@ -15,6 +16,7 @@ export const objectSchemaValidator = z.object({
   required: z.array(z.string()).optional(),
   properties: z.record(
     z.union([
+      anyOfSchemaPropertyValidator,
       arraySchemaPropertyValidator,
       booleanSchemaPropertyValidator,
       numberSchemaPropertyValidator,

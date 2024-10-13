@@ -2,9 +2,9 @@
 
 import process from 'node:process'
 import { Command } from 'commander'
-import { YamlSchemaManager } from './components/yaml-schema-manager'
-import { YamlPathManager } from './parameters/yaml-path-manager'
-import { YamlQueryManager } from './parameters/yaml-query-manager'
+import { YamlPathManager } from './managers/yaml-path-manager'
+import { YamlQueryManager } from './managers/yaml-query-manager'
+import { YamlSchemaManager } from './managers/yaml-schema-manager'
 
 interface Options {
   input: string

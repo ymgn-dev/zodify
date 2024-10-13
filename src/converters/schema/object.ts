@@ -1,7 +1,8 @@
 import { SchemaConverterBase } from '.'
-import { pascalToCamel } from '../../../utils'
+import { pascalToCamel } from '../../utils'
 import { extendDocSchemaPropertyValidator } from '../../validators/schema-property'
 import {
+  AnyOfPropertyConverter,
   ArrayPropertyConverter,
   BooleanPropertyConverter,
   ExtendDocPropertyConverter,
@@ -100,6 +101,15 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
             ),
           )
           break
+        case 'anyOf':
+          propertyConverters.push(
+            new AnyOfPropertyConverter(
+              this.name,
+              propertyName,
+              property,
+              this.schema.required?.includes(propertyName) ?? false,
+            ),
+          )
       }
     }
     const comment = this.schema.description ? `// ${this.schema.description}\n` : ''
