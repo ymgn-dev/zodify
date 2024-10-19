@@ -1,5 +1,6 @@
 import { assert } from 'node:console'
 import {
+  ArrayPropertyConverter,
   BooleanPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
@@ -10,6 +11,7 @@ import { YamlSchemaManager } from '../../managers/yaml-schema-manager'
 import { pascalToCamel } from '../../utils'
 import type {
   AnySchemaPropertyFormat,
+  ArraySchemaProperty,
   IntegerSchemaPropertyFormat,
   NumberSchemaPropertyFormat,
   OneOrAnyOfSchemaProperty,
@@ -30,6 +32,7 @@ export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
   convertItem(
     type: SchemaDataType,
     format?: AnySchemaPropertyFormat,
+    arraySchemaProperty?: ArraySchemaProperty,
   ) {
     switch (type) {
       case 'string': {
@@ -68,6 +71,12 @@ export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
       case 'boolean': {
         return new BooleanPropertyConverter(this.schemaName, '', { type }, true).convert()
       }
+      case 'array': {
+        if (arraySchemaProperty) {
+          return new ArrayPropertyConverter(this.schemaName, '', arraySchemaProperty, true).convert()
+        }
+        throw new Error('Array items is required')
+      }
       default:
         return ''
     }
@@ -80,11 +89,16 @@ export class OneOrAnyOfPropertyConverter extends SchemaPropertyConverterBase {
       if (i.$ref) {
         const depSchemaName = i.$ref.split('/').pop() ?? ''
         YamlSchemaManager.addSchemaDependencies(this.schemaName, depSchemaName)
-        converted.push(`${pascalToCamel(depSchemaName)}Schema`)
+        converted.push(`${pascalToCamel(depSchemaName)}Schema,`)
       }
       else if (i.type) {
         const format = i.format as AnySchemaPropertyFormat
-        converted.push(this.convertItem(i.type, format))
+        if (i.type === 'array') {
+          converted.push(this.convertItem(i.type, format, i))
+        }
+        else {
+          converted.push(this.convertItem(i.type, format))
+        }
       }
       else {
         assert(false, `Invalid anyOf item: ${JSON.stringify(i)}`)

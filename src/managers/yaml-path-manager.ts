@@ -91,11 +91,21 @@ export class YamlPathManager {
         if (oneOfAnyOfSchemaPropertyValidator.safeParse(schema).success) {
           const anyOfSchema = oneOfAnyOfSchemaPropertyValidator.parse(schema)
           const output = new OneOrAnyOfPropertyConverter(key, name, anyOfSchema, required).convert()
+          const regex = /(?<![\w:])(\w*Schema)\b/g
+          const matches = [...output.matchAll(regex)].map(match => match[1])
+          if (matches.length > 0) {
+            this.importSchemas.push(...[...new Set(matches)])
+          }
           paramOutputs.push(output)
         }
         if (arraySchemaPropertyValidator.safeParse(schema).success) {
           const arraySchema = arraySchemaPropertyValidator.parse(schema)
           const output = new ArrayPropertyConverter(key, name, arraySchema, required).convert()
+          const regex = /:\s*z\.\w+\((\w+Schema)\)/
+          const match = output.match(regex)
+          if (match) {
+            this.importSchemas.push(match[1])
+          }
           paramOutputs.push(output)
         }
         else if (booleanSchemaPropertyValidator.safeParse(schema).success) {
@@ -136,7 +146,8 @@ export class YamlPathManager {
       fs.mkdirSync(dirPath, { recursive: true })
     }
 
-    fs.writeFileSync(this.writeFilePath, 'import { z } from \'zod\'\n\n', 'utf8')
+    fs.writeFileSync(this.writeFilePath, '/* eslint-disable import/no-duplicates */\n', 'utf-8')
+    fs.writeFileSync(this.writeFilePath, 'import { z } from \'zod\'\n\n', { flag: 'a' })
 
     if (this.importSchemas) {
       const importPath = getRelativePath(this.writeFilePath, this.schemaWriteFilePath)

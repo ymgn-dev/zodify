@@ -8,12 +8,13 @@ import {
   stringSchemaPropertyFormatValidator,
 } from '../../validators/schema-property'
 import {
+  ArrayPropertyConverter,
   BooleanPropertyConverter,
   IntegerPropertyConverter,
   NumberPropertyConverter,
   StringPropertyConverter,
 } from '../schema-property'
-import type { AnySchemaPropertyFormat, OneOrAnySchema, SchemaDataType } from '../../types'
+import type { AnySchemaPropertyFormat, ArraySchemaProperty, OneOrAnySchema, SchemaDataType } from '../../types'
 import type { SchemaPropertyConverterBase } from '../schema-property'
 
 export class OneOrAnyOfSchemaConverter extends SchemaConverterBase {
@@ -27,6 +28,7 @@ export class OneOrAnyOfSchemaConverter extends SchemaConverterBase {
   convertItemType(
     type: SchemaDataType,
     format?: AnySchemaPropertyFormat,
+    arraySchemaProperty?: ArraySchemaProperty,
   ) {
     let converter: SchemaPropertyConverterBase | undefined
     switch (type) {
@@ -55,6 +57,12 @@ export class OneOrAnyOfSchemaConverter extends SchemaConverterBase {
         converter = new BooleanPropertyConverter(this.name, '', { type }, true)
         break
       }
+      case 'array': {
+        if (arraySchemaProperty) {
+          return new ArrayPropertyConverter(this.name, '', arraySchemaProperty, true).convert()
+        }
+        throw new Error('Array items is required')
+      }
     }
     return converter?.convert() ?? ''
   }
@@ -69,7 +77,12 @@ export class OneOrAnyOfSchemaConverter extends SchemaConverterBase {
         converted.push(`${pascalToCamel(depSchemaName)}Schema,`)
       }
       else if (i.type) {
-        converted.push(this.convertItemType(i.type, i.format))
+        if (i.type === 'array') {
+          converted.push(this.convertItemType(i.type, i.format, i))
+        }
+        else {
+          converted.push(this.convertItemType(i.type, i.format))
+        }
       }
       else {
         assert(false, `Invalid anyOf item: ${JSON.stringify(i)}`)
