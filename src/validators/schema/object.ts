@@ -26,7 +26,7 @@ export const objectSchemaValidator = z.object({
       stringSchemaPropertyValidator,
       refSchemaPropertyValidator,
     ]),
-  ),
+  ).optional().default({}),
   allOf: z.array(z.object({ $ref: z.string() })).optional(),
   description: z.string().optional(),
 })

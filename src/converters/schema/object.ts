@@ -35,7 +35,7 @@ export class ObjectSchemaConverter extends SchemaConverterBase {
   }
 
   override convert() {
-    const schemaPropertyNames = Object.keys(this.schema.properties)
+    const schemaPropertyNames = Object.keys(this.schema.properties ?? {})
     const propertyConverters: SchemaPropertyConverterBase[] = []
 
     for (const propertyName of schemaPropertyNames) {
