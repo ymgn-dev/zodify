@@ -1,5 +1,6 @@
 import { exec } from 'node:child_process'
 import * as fs from 'node:fs'
+import { register } from 'node:module'
 import path from 'node:path'
 import yaml from 'yaml'
 import {
@@ -96,6 +97,11 @@ export class YamlQueryManager {
         if (arraySchemaPropertyValidator.safeParse(schema).success) {
           const arraySchema = arraySchemaPropertyValidator.parse(schema)
           const output = new ArrayPropertyConverter(key, name, arraySchema, required).convert()
+          const regex = /:\s*z\.\w+\((\w+Schema)\)/
+          const match = output.match(regex)
+          if (match) {
+            this.importSchemas.push(match[1])
+          }
           paramOutputs.push(output)
         }
         else if (booleanSchemaPropertyValidator.safeParse(schema).success) {
