@@ -143,7 +143,7 @@ export class YamlQueryManager {
       const importFilename = path.basename(this.schemaWriteFilePath, '.ts')
       const importFrom = importPath === '.' ? `./${importFilename}` : path.join(importPath, importFilename)
 
-      for (const schema of this.importSchemas) {
+      for (const schema of [...new Set(this.importSchemas)]) {
         fs.writeFileSync(this.writeFilePath, 'import {\n', { flag: 'a' })
         fs.writeFileSync(this.writeFilePath, `${schema},\n`, { flag: 'a' })
         fs.writeFileSync(this.writeFilePath, `} from '${importFrom}'\n\n`, { flag: 'a' })
