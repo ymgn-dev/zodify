@@ -19,6 +19,7 @@ export const stringSchemaPropertyFormatValidator = z.union([
   z.literal('email'),
   z.literal('uuid'),
   z.literal('cuid'),
+  z.literal('cuid2'),
   z.literal('ip'),
 ]).optional()
 

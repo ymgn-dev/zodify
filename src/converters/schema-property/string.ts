@@ -34,6 +34,8 @@ export class StringPropertyConverter extends SchemaPropertyConverterBase {
         return '.uuid()'
       case 'cuid':
         return '.cuid()'
+      case 'cuid2':
+        return '.cuid2()'
       case 'ip':
         return '.ip()'
       case undefined:
