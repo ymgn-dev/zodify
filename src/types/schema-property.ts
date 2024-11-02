@@ -8,6 +8,7 @@ import type {
   integerSchemaPropertyValidator,
   numberSchemaPropertyFormatValidator,
   numberSchemaPropertyValidator,
+  objectSchemaPropertyValidator,
   oneOfAnyOfSchemaPropertyValidator,
   refSchemaPropertyValidator,
   stringSchemaPropertyFormatValidator,
@@ -23,6 +24,7 @@ export type IntegerSchemaProperty = z.infer<typeof integerSchemaPropertyValidato
 export type OneOrAnyOfSchemaProperty = z.infer<typeof oneOfAnyOfSchemaPropertyValidator>
 export type StringSchemaProperty = z.infer<typeof stringSchemaPropertyValidator>
 export type RefSchemaProperty = z.infer<typeof refSchemaPropertyValidator>
+export type ObjectSchemaProperty = z.infer<typeof objectSchemaPropertyValidator>
 
 export type StringSchemaPropertyFormat = z.infer<typeof stringSchemaPropertyFormatValidator>
 export type NumberSchemaPropertyFormat = z.infer<typeof numberSchemaPropertyFormatValidator>

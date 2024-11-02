@@ -8,14 +8,11 @@ import {
   oneOfAnyOfSchemaPropertyValidator,
   refSchemaPropertyValidator,
   stringSchemaPropertyValidator,
-} from '../schema-property'
-import {
-  objectSchemaPropertyValidator,
-} from '../schema-property/object'
+} from '.'
 
-// See https://typespec.io/docs/language-basics/models
+// See https://typespec.io/docs/language-basics/built-in-types#numeric-types
 
-export const objectSchemaValidator = z.object({
+export const objectSchemaPropertyValidator = z.object({
   type: z.literal('object'),
   required: z.array(z.string()).optional(),
   properties: z.record(
@@ -28,7 +25,6 @@ export const objectSchemaValidator = z.object({
       integerSchemaPropertyValidator,
       stringSchemaPropertyValidator,
       refSchemaPropertyValidator,
-      objectSchemaPropertyValidator,
     ]),
   ).optional().default({}),
   allOf: z.array(z.object({ $ref: z.string() })).optional(),
